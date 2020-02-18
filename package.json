@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/9992/HEROKU.git"
+    "url": "git+https://github.com/ellapresso/mad_street_shop.git"
   },
-  "author": "",
+  "author": "@ellapresso, @9992",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/9992/HEROKU/issues"
+    "url": "https://github.com/ellapresso/mad_street_shop/issues"
   },
-  "homepage": "https://github.com/9992/HEROKU#readme",
+  "homepage": "https://github.com/ellapresso/mad_street_shop#readme",
   "dependencies": {
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
