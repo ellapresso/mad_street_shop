@@ -1,2 +1,1 @@
-module.exports.list = require('./list');
-module.exports.insert = require('./insert');
+module.exports.list = require("./list");
