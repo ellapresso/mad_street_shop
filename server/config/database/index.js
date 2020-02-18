@@ -1,1 +1,1 @@
-module.exports.mongooseDb = require("./mongoose.database");
+module.exports = require("./mongoose.database");

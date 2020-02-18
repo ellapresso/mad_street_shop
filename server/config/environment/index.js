@@ -21,9 +21,7 @@ const config = {
       port: process.env.SSS_DATABASE_PORT || "",
       username: process.env.SSS_DATABASE_USERNAME || "",
       password: process.env.SSS_DATABASE_PASSWORD || "",
-      schema: process.env.SSS_DATABASE_SCHEMA || "",
-      dbname: process.env.SSS_DATABASE_DBNAME || "",
-      path: process.env.SSS_DATABASE_PATH || ""
+      dbname: process.env.SSS_DATABASE_DBNAME || ""
     }
   }
 };

@@ -1,4 +1,4 @@
-# `MAD-STREET-#(shop)`
+# `MAD-STREET-#(shop)` server
 
 ## SYSTEM
 
