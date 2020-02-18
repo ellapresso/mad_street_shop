@@ -13,6 +13,5 @@ const UsersSchema = new mongoose.Schema({
   deleted: { type: Boolean, default: null } //탈퇴 정보
 });
 
-global.Users = global.Users || mongoose.model("users", UsersSchema);
 const Users = mongoose.model("users", UsersSchema);
 module.exports = Users;

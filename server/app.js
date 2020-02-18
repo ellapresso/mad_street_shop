@@ -18,9 +18,8 @@ app.use(cors({ origin: [/localhost/] }));
 api.route(app);
 
 // use database
-const db = require("./config/database/mongoose.database");
-db();
-console.log("[DATABASE] db 로그인까지 정상적으로 진행되었습니다");
+database();
+
 /**
  * 처리하지 못한 예외 로그 기록
  */
