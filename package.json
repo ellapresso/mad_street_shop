@@ -1,7 +1,7 @@
 {
-  "name": "mad_street_shop",
+  "name": "heroku-project",
   "version": "1.0.0",
-  "description": "길거리 음식정보를 볼 수 있는 프로젝트",
+  "description": "nothing",
   "main": "./server/index.js",
   "scripts": {
     "start": "node ./server/index.js",
@@ -9,21 +9,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ellapresso/mad_street_shop.git"
+    "url": "git+https://github.com/9992/HEROKU.git"
   },
-  "author": "ellapresso@gmail.com",
+  "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ellapresso/mad_street_shop/issues"
+    "url": "https://github.com/9992/HEROKU/issues"
   },
-  "homepage": "https://github.com/ellapresso/mad_street_shop#readme",
+  "homepage": "https://github.com/9992/HEROKU#readme",
   "dependencies": {
-    "dotenv": "^8.2.0",
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "ejs": "^2.6.2",
+    "eslint": "^6.8.0",
     "express": "^4.17.1",
-    "git-flow": "^0.2.0",
-    "http": "0.0.0",
     "lodash": "^4.17.15",
-    "mongoose": "^5.8.11",
-    "path": "^0.12.7"
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.3"
   }
 }
