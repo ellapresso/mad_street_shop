@@ -9,8 +9,8 @@ const UsersSchema = new mongoose.Schema({
   useProfile: { type: Boolean, default: false },
   kakao: { type: Object, default: {} },
   owner: { type: Boolean, default: false },
-  isUser: { type: Boolean, default: false }, //가입 정보
-  deleted: { type: Boolean, default: null } //탈퇴 정보
+  isUser: { type: Boolean, default: false }, 
+  deleted: { type: Boolean, default: null }
 });
 
 global.Users = global.Users || mongoose.model("users", UsersSchema);
