@@ -1,21 +1,22 @@
 const Users = require("../../model/Users");
 const { shopDetail } = require("../../module/shop");
-const _ = require("lodash");
 
-async function list(req, res) { 
+async function list(req, res) {
   const { userId } = req.body;
-  const isUser = await Users.findOne({ userId, isUser: true });
-  if (!isUser || !userId) {
-    return res.sendStatus(404);
-  } else {
-    const favoritesList = isUser.favoriteShops;
-    const data = []
-    for(let i=0; i < favoritesList.length; i++){
-      d = await shopDetail(favoritesList[i])
-      data.push(d)
-    }
-    return res.send(data);
+  const data = [];
+
+  if (!userId) return res.sendStatus(404);
+
+  const shops = await Users.findOne({ userId, isUser: true })
+    .then(res => res.favoriteShops)
+    .catch(err => res.sendStatus(403).send(err));
+  if (!shops) return res.sendStatus(302);
+
+  for (const e of shops) {
+    data.push(await shopDetail(e));
   }
+
+  return res.send(data);
 }
 
 module.exports = list;
