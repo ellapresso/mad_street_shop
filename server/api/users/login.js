@@ -24,7 +24,7 @@ function kakaoLogin(req, res) {
           isUser: false
         };
         await Users.findOneAndUpdate({ userId }, userData, { upsert: true });
-        return res.sendStatus(404).send({ isUser: false, userId });
+        return res.status(404).send({ isUser: false, userId });
       }
 
       //새로 로그인 한 경우 새로운 데이터로 저장
@@ -51,7 +51,7 @@ function kakaoLogin(req, res) {
     })
     .catch(err => {
       console.error(`[login error] ${err}`);
-      return res.sendStatus(500).send(err);
+      return res.status(500).send(err);
     });
 }
 
