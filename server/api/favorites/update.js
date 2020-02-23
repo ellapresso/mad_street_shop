@@ -1,6 +1,5 @@
 const Users = require("../../model/Users");
 const Shops = require("../../model/Shops");
-const _ = require("lodash");
 
 async function favoritesDelete(req, res) {
   const { userId, shopId } = req.body;
