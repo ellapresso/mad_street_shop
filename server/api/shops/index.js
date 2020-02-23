@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-router.post("/list", require("./list"));
-router.post("/detail", require("./detail"));
+router.get("/list", require("./list"));
+router.get("/:shopId", require("./detail"));
 
 module.exports = router;

@@ -10,6 +10,7 @@ async function list(req, res) {
   } else {
     const favoritesList = isUser.favoriteShops;
     //TODO: shopDetail 모듈 사용하여 구현하기
+    console.log(await shopDetail("5dbab03d77ff1c02d4b00486"));
     return res.send("result");
   }
 }
