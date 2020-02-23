@@ -1,5 +1,5 @@
-const Users = require("../model/Users");
-const tokenChecker = require("../../../module/oAuth");
+const Users = require("../../model/Users");
+const tokenChecker = require("../../module/oAuth");
 // 회원정보 조회 함수, POST 요청으로 ID 값이 넘어왔을 때 하나의 내용만 불러와서 조회
 //whoamI로 변경예정
 async function myInfo(req, res) {

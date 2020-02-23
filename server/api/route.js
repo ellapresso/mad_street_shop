@@ -1,9 +1,5 @@
 const express = require("express");
 
-const users = require("./users");
-const shops = require("./shops");
-const tags = require("./tags");
-
 const route = app => {
   const router = express.Router();
   app.use(router);
@@ -12,9 +8,10 @@ const route = app => {
     res.sendStatus(200);
   });
 
-  app.use("/api/shops", shops);
-  app.use("/api/users", users);
-  app.use("/api/tags", tags);
+  app.use("/api/users", require("./users"));
+  app.use("/api/shops", require("./shops"));
+  app.use("/api/favorites", require("./favorites"));
+  app.use("/api/tags", require("./tags"));
 
   return app;
 };
