@@ -13,5 +13,5 @@ const UsersSchema = new mongoose.Schema({
   deleted: { type: Boolean, default: null }
 });
 
-const Users = mongoose.model("Users", UsersSchema);
+const Users = mongoose.model("Users", UsersSchema, "Users");
 module.exports = Users;
