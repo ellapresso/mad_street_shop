@@ -1,10 +1,8 @@
 const express = require("express");
-const controller = require("./controllers");
 
 const router = express.Router();
 
-// example
-router.get("/", controller.list);
-router.get("/:shopId", controller.detail);
+router.post("/list", require("./list"));
+router.post("/detail", require("./detail"));
 
 module.exports = router;
