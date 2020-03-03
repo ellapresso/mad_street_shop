@@ -47,11 +47,11 @@ function kakaoLogin(req, res) {
         isUser: isUser.isUser, //회원가입이전 로그인시 false
         deleted: isUser.deleted //회원탈퇴시 true
       };
-      return res.send({ isUser: true, userInfo });
+      return res.send({ isUser: isUser.isUser, userInfo });
     })
     .catch(err => {
       console.error(`[login error] ${err}`);
-      return res.status(500).send(err);
+      return res.status(500).send(err.message);
     });
 }
 
