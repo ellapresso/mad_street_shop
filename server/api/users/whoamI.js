@@ -1,15 +1,17 @@
 const Users = require("../../model/Users");
-const tokenChecker = require("../../module/oAuth");
+const { tokenCheck } = require("../../module/oAuth");
 
 async function whoamI(req, res) {
   const token = req.headers.authorization;
-  const myId = req.body.userId;
-  const isUser = await tokenChecker.tokenCheck(token);
+  const { userId } = req.body;
 
-  if (isUser !== 200 || !myId) return res.sendStatus(403);
+  const isUser = await tokenCheck(token); //kakao 유저인지 확인
+  if (isUser !== 200 || !userId) return res.sendStatus(403);
 
-  const myInfo = await Users.findOne({ userId: myId });
-  return res.send(myInfo);
+  const userInfo = await Users.findOne({ userId }); //가입된 회원인지 확인
+  if (!userInfo.isUser) return res.sendStatus(404);
+
+  return res.send(userInfo);
 }
 
 module.exports = whoamI;
