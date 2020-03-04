@@ -9,7 +9,8 @@ const mongooseDb = () => {
         `${env.dialect}://${env.username}:${env.password}@${env.host}:${env.port}/${env.dbname}`,
         {
           useNewUrlParser: true,
-          useUnifiedTopology: true
+          useUnifiedTopology: true,
+          useFindAndModify: false
         }
       )
       .catch(err => {
