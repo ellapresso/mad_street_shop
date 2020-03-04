@@ -9,9 +9,9 @@ const UsersSchema = new mongoose.Schema({
   useProfile: { type: Boolean, default: false },
   kakao: { type: Object, default: {} },
   owner: { type: Boolean, default: false },
-  isUser: { type: Boolean, default: false }, 
+  isUser: { type: Boolean, default: false },
   deleted: { type: Boolean, default: null }
 });
 
-const Users = mongoose.model("users", UsersSchema);
+const Users = mongoose.model("Users", UsersSchema, "Users");
 module.exports = Users;
