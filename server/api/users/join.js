@@ -22,7 +22,8 @@ async function join(req, res) {
       openDays, //Array
       openTime,
       closeTime,
-      shopComment
+      shopComment,
+      useKakao
     } = req.body;
 
     const imageUrl = req.files.map(e => e.location);
