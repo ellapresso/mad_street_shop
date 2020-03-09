@@ -7,7 +7,7 @@ const ShopsSchema = new mongoose.Schema({
   ownerName: String,
   ownerMobile: String,
   userMobile: Boolean,
-  shopTags: Array,
+  shopTags: Object,
   openDays: { type: Array, default: null },
   openTime: { type: String, default: null },
   closeTime: { type: String, default: null },
