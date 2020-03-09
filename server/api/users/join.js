@@ -22,8 +22,7 @@ async function join(req, res) {
       openDays, //Array
       openTime,
       closeTime,
-      shopComment,
-      useKakao
+      shopComment
     } = req.body;
 
     const imageUrl = req.files.map(e => e.location);
@@ -47,23 +46,23 @@ async function join(req, res) {
       imageUrl
     };
 
-    // await Shops.create(shopData)
-    //   .then(
-    //     await Users.updateOne(
-    //       { userId, isUser: false },
-    //       {
-    //         isUser: true,
-    //         useProfile: useKakao,
-    //         owner: true
-    //       },
-    //       { upsert: true }
-    //     )
-    //       .then(res.sendStatus(200))
-    //       .catch(err => res.status(500).send(err))
-    //   )
-    //   .catch(err => {
-    //     res.status(500).send(err);
-    //   });
+    await Shops.create(shopData)
+      .then(
+        await Users.updateOne(
+          { userId, isUser: false },
+          {
+            isUser: true,
+            useProfile: useKakao,
+            owner: true
+          },
+          { upsert: true }
+        )
+          .then(res.sendStatus(200))
+          .catch(err => res.status(500).send(err))
+      )
+      .catch(err => {
+        res.status(500).send(err);
+      });
   }
 
   if (isOwner === "user") {
