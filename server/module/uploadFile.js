@@ -20,7 +20,8 @@ const upload = multer({
       cb(null, file.mimetype);
     },
     key: function(req, file, cb) {
-      cb(null, "shops/" + file.originalname);
+      const { shopName, userId } = req.body;
+      cb(null, shopName + "_" + userId + "/" + file.originalname);
     }
   })
 });

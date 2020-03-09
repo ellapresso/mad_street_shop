@@ -31,6 +31,7 @@ async function join(req, res) {
     const shopData = {
       shopName,
       shopOwner: userId,
+      ownerName: userName,
       mobile,
       useMobile,
       shopTags: JSON.parse(category),
@@ -46,24 +47,23 @@ async function join(req, res) {
       imageUrl
     };
 
-    //TODO: shop정보 등록에 성공하면, 회원가입여부를 true로 변경할 것.
-    await Shops.create(shopData)
-      .then(
-        await Users.updateOne(
-          { userId, isUser: false },
-          {
-            isUser: true,
-            useProfile: useKakao,
-            owner: true
-          },
-          { upsert: true }
-        )
-          .then(res.sendStatus(200))
-          .catch(err => res.status(500).send(err))
-      )
-      .catch(err => {
-        res.status(500).send(err);
-      });
+    // await Shops.create(shopData)
+    //   .then(
+    //     await Users.updateOne(
+    //       { userId, isUser: false },
+    //       {
+    //         isUser: true,
+    //         useProfile: useKakao,
+    //         owner: true
+    //       },
+    //       { upsert: true }
+    //     )
+    //       .then(res.sendStatus(200))
+    //       .catch(err => res.status(500).send(err))
+    //   )
+    //   .catch(err => {
+    //     res.status(500).send(err);
+    //   });
   }
 
   if (isOwner === "user") {
