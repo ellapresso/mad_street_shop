@@ -17,6 +17,7 @@ const ShopsSchema = new mongoose.Schema({
   },
   ownerComment: { type: String, default: "감사합니다." },
   likeScore: { type: Number, default: 0 },
+  imageUrl: Array,
   now: {
     active: { type: Boolean, default: false },
     real_location: {
