@@ -8,17 +8,18 @@ async function list(req, res) {
   const { lat, long } = req.query;
   const { userId } = req.body;
   const data = [];
-  console.log("호출:", userId)
   if (!userId) return res.sendStatus(404);
 
   const shops = await Users.findOne({ userId, isUser: true })
     .then(res => res.favoriteShops)
     .catch(err => res.sendStatus(403).send(err));
   if (!shops) return res.sendStatus(302);
-  console.log(shops)
   for (const e of shops) {
-    // data push 이전에 deleted 값이 true인지 false 인지 판단하는 과정이 필요
-    data.push(await shopDetail(e));
+    // data push 이전에 deleted 값이 true인지 false 인지 판단하는 과정이 필요    
+    item = await shopDetail(e);
+    if(item.deleted !== true){
+      data.push(item); 
+    }
   }
   //TODO: 디자인에서 만약에, 가게이름,카테고리, 이미지, 거리가 나타난다면 가공해주어야 함.
   // 쿼리 스트링으로 주소(A,B)를 받게 되면 관심 리스트 거리 순으로
