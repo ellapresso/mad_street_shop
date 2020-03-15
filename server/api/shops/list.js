@@ -21,6 +21,7 @@ async function shopList(req, res) {
       longitude = e.location.longitude;
     }
     return {
+      shopId: e._id,
       shopName: e.shopName,
       shopOwner: e.shopOwner,
       now: {

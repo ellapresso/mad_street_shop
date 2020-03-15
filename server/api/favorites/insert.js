@@ -1,25 +1,30 @@
 const Users = require("../../model/Users");
 const Shops = require("../../model/Shops");
+const { tokenCheck, isUser } = require("../../module/oAuth");
 
 async function insert(req, res) {
+  const token = req.headers.authorization;
   const { userId, shopId } = req.body;
-  const isShop = await Shops.findOne({ _id: shopId });
+
+  const isUserToken = await tokenCheck(token); //kakao 유저인지 확인
+  if (isUserToken !== 200 || !userId) return res.sendStatus(403);
+  const user = await isUser(userId); //가입된 유저인지 확인
+  if (!user) return res.status(400);
+
+  const isShop = await Shops.findOne({ _id: shopId, deleted: false });
   if (!isShop) return res.sendStatus(404);
 
-  const isUser = await Users.findOne({ userId, isUser: true });
-  if (!isUser) return res.sendStatus(302);
+  const findShop = user.favoriteShops.indexOf(shopId);
+  if (findShop !== -1) return res.sendStatus(302);
 
-  const findShop = isUser.favoriteShops.indexOf(shopId);
-  if(findShop !== -1) return res.sendStatus(302);
-
-  if (isUser.favoriteShops.length < 4){
-  const result = await Users.updateOne(
-    { userId: userId },
-    { $addToSet: { favoriteShops: shopId } }  
-  )
-    .then(res.sendStatus(200))
-    .catch(err => res.sendStatus(500).send(err));
-  return result;
+  if (user.favoriteShops.length < 4) {
+    const result = await Users.updateOne(
+      { userId: userId },
+      { $addToSet: { favoriteShops: shopId } }
+    )
+      .then(res.sendStatus(200))
+      .catch(err => res.sendStatus(500).send(err));
+    return result;
   } else {
     return res.sendStatus(402);
   }
