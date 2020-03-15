@@ -4,6 +4,6 @@ const router = express.Router();
 
 router.post("/", require("./insert"));
 router.delete("/", require("./delete"));
-router.get("/list", require("./list"));
+router.get("/", require("./list"));
 
 module.exports = router;
