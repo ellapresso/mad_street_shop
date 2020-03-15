@@ -29,7 +29,7 @@ const ShopsSchema = new mongoose.Schema({
   },
   createdAt: { type: String, default: currentTime },
   updatedAt: { type: Date, default: null },
-  deleted: { type: Boolean, default: null },
+  deleted: { type: Boolean, default: false },
   deletedAt: { type: Date, default: null }
 });
 
