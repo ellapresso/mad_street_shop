@@ -88,10 +88,11 @@ async function join(req, res) {
 
   if (isOwner === "user") {
     //일반회원 가입
-    const { userId, useKakao, category } = req.body;
+    const { nickName, userId, useKakao, category } = req.body;
     await Users.updateOne(
       { userId, isUser: false },
       {
+        nickName,
         isUser: true,
         owner: false,
         "kakao.active": useKakao,
