@@ -16,4 +16,13 @@ function PythagorasEquirectangular(pArray) {
   return d;
 }
 
-module.exports.PythagorasEquirectangular = PythagorasEquirectangular;
+function vicinityCalculator(lat, long, list) {
+  return list.map(e => {
+    const obj = e.toObject();
+    const { latitude, longitude } = e.now.location || e.location;
+    obj.vicinity = PythagorasEquirectangular([lat, long, latitude, longitude]);
+    return obj;
+  });
+}
+
+module.exports.vicinityCalculator = vicinityCalculator;
