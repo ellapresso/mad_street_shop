@@ -1,11 +1,10 @@
 const Users = require("../../model/Users");
 const Shops = require("../../model/Shops");
+const { isUser, isUserYet } = require("../../module/oAuth");
 
 async function join(req, res) {
-  //TODO: 필수값 체크, 중복데이터 체크
   const { isOwner } = req.params; //owner or user
   const types = ["owner", "user"];
-
   if (types.indexOf(isOwner) === -1) return res.sendStatus(403);
 
   if (isOwner === "owner") {
@@ -26,6 +25,27 @@ async function join(req, res) {
       useKakao
     } = req.body;
 
+    if (await isUser(userId)) {
+      return res.status(302).send("이미 가입되어있는 사용자 입니다.");
+    } else if (!(await isUserYet(userId))) {
+      return res.status(404).send("카카오 로그인을 먼저해주세요");
+    }
+    if (
+      !userName ||
+      !mobile ||
+      !useMobile ||
+      !shopName ||
+      !category ||
+      !longitude ||
+      !latitude ||
+      !openDays ||
+      !openTime ||
+      !closeTime ||
+      !useKakao
+    ) {
+      res.status(400).send("입력 필수값을 확인해주세요");
+    }
+
     const imageUrl = req.files.map(e => e.location);
 
     const shopData = {
@@ -42,7 +62,7 @@ async function join(req, res) {
         longitude: longitude || null,
         latitude: latitude || null
       },
-      locationComment,
+      locationComment: locationComment || "",
       ownerComment: shopComment || "",
       imageUrl
     };
@@ -53,8 +73,8 @@ async function join(req, res) {
           { userId, isUser: false },
           {
             isUser: true,
-            useProfile: useKakao,
-            owner: true
+            owner: true,
+            "kakao.active": useKakao
           },
           { upsert: true }
         )
