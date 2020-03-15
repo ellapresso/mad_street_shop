@@ -6,7 +6,6 @@ const UsersSchema = new mongoose.Schema({
   userTags: { type: Array, default: [] },
   userPasswords: String,
   favoriteShops: { type: Array, default: [] },
-  useProfile: { type: Boolean, default: false },
   kakao: { type: Object, default: {} },
   owner: { type: Boolean, default: false },
   isUser: { type: Boolean, default: false },
