@@ -23,6 +23,10 @@ const config = {
       password: process.env.SSS_DATABASE_PASSWORD || "",
       dbname: process.env.SSS_DATABASE_DBNAME || ""
     }
+  },
+  aws: {
+    ID: process.env.AWSACCESSID || "",
+    SECRET: process.env.AWSSECRETKEY || ""
   }
 };
 

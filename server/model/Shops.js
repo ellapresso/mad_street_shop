@@ -7,7 +7,7 @@ const ShopsSchema = new mongoose.Schema({
   ownerName: String,
   ownerMobile: String,
   userMobile: Boolean,
-  shopTags: Array,
+  shopTags: Object,
   openDays: { type: Array, default: null },
   openTime: { type: String, default: null },
   closeTime: { type: String, default: null },
@@ -17,6 +17,7 @@ const ShopsSchema = new mongoose.Schema({
   },
   ownerComment: { type: String, default: "감사합니다." },
   likeScore: { type: Number, default: 0 },
+  imageUrl: Array,
   now: {
     active: { type: Boolean, default: false },
     real_location: {
@@ -28,7 +29,7 @@ const ShopsSchema = new mongoose.Schema({
   },
   createdAt: { type: String, default: currentTime },
   updatedAt: { type: Date, default: null },
-  deleted: { type: Boolean, default: null },
+  deleted: { type: Boolean, default: false },
   deletedAt: { type: Date, default: null }
 });
 

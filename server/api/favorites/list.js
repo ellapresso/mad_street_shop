@@ -1,12 +1,19 @@
 const Users = require("../../model/Users");
 const { shopDetail } = require("../../module/shop");
+const { vicinityCalculator } = require("../../module/formula");
+const { isUser, tokenCheck } = require("../../module/oAuth");
+const _ = require("lodash");
 
 async function list(req, res) {
-  //TODO: 가게정보가 deleted : true이면 , 안나와야됨.
+  const token = req.headers.authorization;
+  const { lat, long } = req.query;
   const { userId } = req.body;
   const data = [];
 
-  if (!userId) return res.sendStatus(404);
+  const isUserToken = await tokenCheck(token); //kakao 유저인지 확인
+  if (isUserToken !== 200 || !userId) return res.sendStatus(403);
+  const user = await isUser(userId); //가입된 유저인지 확인
+  if (!user) return res.status(400);
 
   const shops = await Users.findOne({ userId, isUser: true })
     .then(res => res.favoriteShops)
@@ -17,7 +24,10 @@ async function list(req, res) {
     data.push(await shopDetail(e));
   }
 
-  //TODO: 디자인에서 만약에, 가게이름,카테고리, 이미지, 거리가 나타난다면 가공해주어야 함.
+  if (lat || long) {
+    const list = _.sortBy(vicinityCalculator(lat, long, data), ["vicinity"]);
+    return res.send(list);
+  }
   return res.send(data);
 }
 
