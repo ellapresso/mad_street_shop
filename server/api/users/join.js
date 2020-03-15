@@ -7,7 +7,14 @@ async function join(req, res) {
   const types = ["owner", "user"];
   if (types.indexOf(isOwner) === -1) return res.sendStatus(403);
 
+  if (await isUser(req.body.userId)) {
+    return res.status(302).send("이미 가입되어있는 사용자 입니다.");
+  } else if (!(await isUserYet(req.body.userId))) {
+    return res.status(404).send("카카오 로그인을 먼저해주세요");
+  }
+
   if (isOwner === "owner") {
+    //사장님 가입
     const {
       userId,
       userName,
@@ -25,11 +32,6 @@ async function join(req, res) {
       useKakao
     } = req.body;
 
-    if (await isUser(userId)) {
-      return res.status(302).send("이미 가입되어있는 사용자 입니다.");
-    } else if (!(await isUserYet(userId))) {
-      return res.status(404).send("카카오 로그인을 먼저해주세요");
-    }
     if (
       !userName ||
       !mobile ||
@@ -48,7 +50,7 @@ async function join(req, res) {
 
     const imageUrl = req.files.map(e => e.location);
 
-    const shopData = {
+    await Shops.create({
       shopName,
       shopOwner: userId,
       ownerName: userName,
@@ -65,9 +67,7 @@ async function join(req, res) {
       locationComment: locationComment || "",
       ownerComment: shopComment || "",
       imageUrl
-    };
-
-    await Shops.create(shopData)
+    })
       .then(
         await Users.updateOne(
           { userId, isUser: false },
@@ -87,10 +87,22 @@ async function join(req, res) {
   }
 
   if (isOwner === "user") {
-    console.log(isOwner);
-    //회원일 경우
-
-    const { userName, category, useKakao } = req.body;
+    //일반회원 가입
+    const { userId, useKakao, category } = req.body;
+    await Users.updateOne(
+      { userId, isUser: false },
+      {
+        isUser: true,
+        owner: false,
+        "kakao.active": useKakao,
+        userTags: JSON.parse(category)
+      },
+      { upsert: true }
+    )
+      .then(res.sendStatus(200))
+      .catch(err => {
+        res.status(500).send(err);
+      });
   }
 }
 
