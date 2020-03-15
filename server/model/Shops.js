@@ -20,12 +20,12 @@ const ShopsSchema = new mongoose.Schema({
   imageUrl: Array,
   now: {
     active: { type: Boolean, default: false },
-    real_location: {
+    location: {
       longitude: mongoose.Types.Decimal128,
       latitude: mongoose.Types.Decimal128
     },
-    real_start_time: Date,
-    set_close_time: Date
+    openTime: Date,
+    closeTime: Date
   },
   createdAt: { type: String, default: currentTime },
   updatedAt: { type: Date, default: null },
