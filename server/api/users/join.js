@@ -99,7 +99,7 @@ async function join(req, res) {
       },
       { upsert: true }
     )
-      .then(res.send(200))
+      .then(res.sendStatus(200))
       .catch(err => {
         res.status(500).send(err);
       });
