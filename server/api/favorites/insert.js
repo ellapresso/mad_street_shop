@@ -1,4 +1,3 @@
-const Users = require("../../model/Users");
 const Shops = require("../../model/Shops");
 const { tokenCheck, isUser } = require("../../module/oAuth");
 
@@ -18,13 +17,11 @@ async function insert(req, res) {
   if (findShop !== -1) return res.sendStatus(302);
 
   if (user.favoriteShops.length < 4) {
-    const result = await Users.updateOne(
-      { userId: userId },
-      { $addToSet: { favoriteShops: shopId } }
-    )
-      .then(res.sendStatus(200))
-      .catch(err => res.sendStatus(500).send(err));
-    return result;
+    const arr = user.favoriteShops;
+    arr.push(shopId);
+    user.favoriteShops = arr;
+    user.save();
+    return res.sendStatus(200);
   } else {
     return res.sendStatus(402);
   }

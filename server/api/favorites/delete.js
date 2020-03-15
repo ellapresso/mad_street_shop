@@ -1,4 +1,3 @@
-const Users = require("../../model/Users");
 const Shops = require("../../model/Shops");
 const { tokenCheck, isUser } = require("../../module/oAuth");
 const mongoose = require("mongoose");
@@ -18,9 +17,7 @@ async function deleted(req, res) {
 
   user.favoriteShops = user.favoriteShops.filter(e => (e = !shopId));
 
-  user.save(function(err) {
-    res.send(err);
-  });
+  user.save();
   return res.sendStatus(200);
 }
 
