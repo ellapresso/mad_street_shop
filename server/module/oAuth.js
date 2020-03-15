@@ -21,7 +21,7 @@ const tokenCheck = token => {
 const isUser = async userId => {
   const user = await User.findOne(
     { userId, isUser: true, deleted: false || null },
-    "-_id -__v"
+    "-__v"
   );
 
   //유저일 경우 유저데이터, 아닐결우 null을 반환 함.
