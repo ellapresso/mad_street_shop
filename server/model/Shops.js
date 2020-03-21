@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const moment = require("moment");
 const currentTime = moment().format("YYYY-MM-DD h:mm:ssa");
+//TODO : locationComment 추가 필요
 const ShopsSchema = new mongoose.Schema({
   shopName: String,
   shopOwner: String,
