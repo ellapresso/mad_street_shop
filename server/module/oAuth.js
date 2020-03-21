@@ -38,6 +38,18 @@ const isUserYet = async userId => {
   return user;
 };
 
+const checkAll = async (userId, token) => {
+  const user = await isUser(userId);
+  const tokenChk = (await tokenCheck(token)) === 200;
+
+  if (user && tokenChk) {
+    return user;
+  } else {
+    return null;
+  }
+};
+
 module.exports.tokenCheck = tokenCheck;
 module.exports.isUser = isUser;
 module.exports.isUserYet = isUserYet;
+module.exports.checkAll = checkAll;

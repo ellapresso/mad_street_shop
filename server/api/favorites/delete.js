@@ -1,5 +1,5 @@
 const Shops = require("../../model/Shops");
-const { tokenCheck, isUser } = require("../../module/oAuth");
+const { checkAll } = require("../../module/oAuth");
 const mongoose = require("mongoose");
 
 async function deleted(req, res) {
@@ -10,10 +10,7 @@ async function deleted(req, res) {
   });
   if (!isShop) return res.sendStatus(302);
 
-  const isUserToken = await tokenCheck(token); //kakao 유저인지 확인
-  if (isUserToken !== 200 || !userId) return res.sendStatus(403);
-  const user = await isUser(userId); //가입된 유저인지 확인
-  if (!user) return res.status(400);
+  const user = await checkAll(userId, token);
 
   user.favoriteShops = user.favoriteShops.filter(e => (e = !shopId));
 

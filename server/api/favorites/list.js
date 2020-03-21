@@ -1,7 +1,7 @@
 const Users = require("../../model/Users");
 const { shopDetail } = require("../../module/shop");
 const { vicinityCalculator } = require("../../module/formula");
-const { isUser, tokenCheck } = require("../../module/oAuth");
+const { checkAll } = require("../../module/oAuth");
 const _ = require("lodash");
 
 async function list(req, res) {
@@ -10,10 +10,7 @@ async function list(req, res) {
   const { userId } = req.body;
   const data = [];
 
-  const isUserToken = await tokenCheck(token); //kakao 유저인지 확인
-  if (isUserToken !== 200 || !userId) return res.sendStatus(403);
-  const user = await isUser(userId); //가입된 유저인지 확인
-  if (!user) return res.status(400);
+  const user = await checkAll(userId, token);
 
   const shops = await Users.findOne({ userId, isUser: true })
     .then(res => res.favoriteShops)
