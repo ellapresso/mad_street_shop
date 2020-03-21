@@ -7,6 +7,7 @@ async function join(req, res) {
   const types = ["owner", "user"];
   if (types.indexOf(isOwner) === -1) return res.sendStatus(403);
 
+  //TODO:잘못된 유저아이디 혹은 찾을수 없는 유저아이디의 경우에 대한 예외처리 필요
   if (await isUser(req.body.userId)) {
     return res.status(302).send("이미 가입되어있는 사용자 입니다.");
   } else if (!(await isUserYet(req.body.userId))) {
@@ -88,10 +89,11 @@ async function join(req, res) {
 
   if (isOwner === "user") {
     //일반회원 가입
-    const { userId, useKakao, category } = req.body;
+    const { nickName, userId, useKakao, category } = req.body;
     await Users.updateOne(
       { userId, isUser: false },
       {
+        nickName,
         isUser: true,
         owner: false,
         "kakao.active": useKakao,
