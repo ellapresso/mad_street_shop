@@ -10,11 +10,10 @@ const tokenCheck = token => {
   })
     .then(response => {
       console.log("토큰확인요청성공 : ", response.statusText);
-      return 200;
+      return response.status;
     })
     .catch(err => {
       console.log("토큰확인요청실패 : ", err.response.data.msg);
-      return 401;
     });
 };
 
@@ -39,9 +38,9 @@ const isUserYet = async userId => {
 
 const checkAll = async (userId, token) => {
   const user = await isUser(userId);
-  const tokenChk = (await tokenCheck(token)) === 200;
+  const tokenChk = await tokenCheck(token);
 
-  if (user && tokenChk) {
+  if (user && tokenChk === 200) {
     return user;
   } else {
     return null;
