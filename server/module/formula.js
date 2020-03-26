@@ -19,10 +19,14 @@ function PythagorasEquirectangular(pArray) {
 function vicinityCalculator(lat, long, list) {
   return list.map(e => {
     const obj = e.toObject();
-    const { latitude, longitude } = e.now.location || e.location;
-    obj.vicinity = PythagorasEquirectangular([lat, long, latitude, longitude]);
+    const { latitude, longitude } = isEmpty(e.now.location)? e.now.location : e.location;
+    obj.vicinity = PythagorasEquirectangular([lat, long, parseFloat(latitude), parseFloat(longitude)]);
     return obj;
   });
+}
+
+function isEmpty(obj){
+  return Object.keys(obj).length === 0;
 }
 
 module.exports.vicinityCalculator = vicinityCalculator;
