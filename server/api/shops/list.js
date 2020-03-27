@@ -11,19 +11,21 @@ async function shopList(req, res) {
       .status(404)
       .send("Can not found your location. please enable your GPS");
   }
+
   const shopActive =
     active === "true" || active === "false"
       ? { "now.active": active, deleted: false }
       : null;
+
   const shopList = await shops.find(
     shopActive,
     "-deleted -deletedAt -createdAt -updatedAt -__v"
-  );
+  )
   const mainList = vicinityCalculator(lat, long, shopList);
+
   const limitResult = mainList.filter(l => {
     return l.vicinity <= range;
   });
-  console.log(limitResult);
   if (limitResult.length < 1) return res.sendStatus(204);
 
   switch (type) {
