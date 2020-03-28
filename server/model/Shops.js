@@ -25,8 +25,9 @@ const ShopsSchema = new mongoose.Schema({
       longitude: mongoose.Types.Decimal128,
       latitude: mongoose.Types.Decimal128
     },
-    openTime: Date,
-    closeTime: Date
+    locationComment: { type: String, default: null },
+    openTime: {type : String},
+    closeTime: {type : String},
   },
   createdAt: { type: String, default: currentTime },
   updatedAt: { type: Date, default: null },
