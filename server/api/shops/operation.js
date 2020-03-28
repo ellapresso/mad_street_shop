@@ -1,6 +1,6 @@
 const shops = require("../../model/Shops");
 const { shopDetail } = require("../../module/shop");
-const { tokenCheck, isUser } = require("../../module/oAuth");
+const { tokenCheck } = require("../../module/oAuth");
 
 async function operation(req, res){
     const token = req.headers.authorization;
