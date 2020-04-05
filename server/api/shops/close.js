@@ -1,6 +1,5 @@
-const shops = require("../../model/Shops");
 const { tokenCheck } = require("../../module/oAuth");
-const { shopDetail } = require("../../module/shop");
+const { shopUpdate,shopDetail } = require("../../module/shop");
 
 async function close(req, res){
     const token = req.headers.authorization;
@@ -9,17 +8,14 @@ async function close(req, res){
     const isUserToken = await tokenCheck(token);
     if (isUserToken !== 200 || !userId) return res.sendStatus(403);
     const shopInfo = await shopDetail(shopId);
-    if (shopInfo.shopOwner !== userId){
-        return res.sendStatus(406);
-    }
+    if (shopInfo.shopOwner != userId) return res.sendStatus(403);
     const updateInfo = {
-        active : false
+        active : false,
     }
-    await shops.findOneAndUpdate({ _id: shopId },{ now : updateInfo },{ upsert: true });
-    
-    const shopInfo2 = await shopDetail(shopId);
-
-    return res.send(shopInfo2)  
+    shopUpdate(shopId, userId, updateInfo).catch(e => {
+        return res.sendStatus(500);
+    })
+    return res.sendStatus(200)  
 }
 
 module.exports = close;

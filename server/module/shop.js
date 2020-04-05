@@ -7,4 +7,12 @@ const shopDetail = async shopId => {
   );
 };
 
+const shopUpdate = async (shopId, userId, infoObejct) => {
+  return await Shops.findOneAndUpdate(
+    { _id: shopId, shopOwner: userId }, {now : infoObejct}, { upsert: true }
+  )
+}
+
+
 module.exports.shopDetail = shopDetail;
+module.exports.shopUpdate = shopUpdate;
