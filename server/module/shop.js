@@ -8,10 +8,12 @@ const shopDetail = async shopId => {
   );
 };
 
-// owner의 userId로 찾음
-const ownerDetail = async shopOwner => {
-  return await Shops.find({ shopOwner, deleted: false });
-};
+const shopUpdate = async (shopId, userId, infoObejct) => {
+  return await Shops.findOneAndUpdate(
+    { _id: shopId, shopOwner: userId }, {now : infoObejct}, { upsert: true }
+  )
+}
+
 
 module.exports.shopDetail = shopDetail;
-module.exports.ownerDetail = ownerDetail;
+module.exports.shopUpdate = shopUpdate;

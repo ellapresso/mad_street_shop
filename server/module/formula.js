@@ -1,5 +1,5 @@
+const _ = require("lodash")
 // 위도 : - 90 ~ 90, 경도 : - 180 ~ 180
-
 function Deg2Rad(deg) {
   return (deg * Math.PI) / 180;
 }
@@ -19,10 +19,11 @@ function PythagorasEquirectangular(pArray) {
 function vicinityCalculator(lat, long, list) {
   return list.map(e => {
     const obj = e.toObject();
-    const { latitude, longitude } = e.now.location || e.location;
-    obj.vicinity = PythagorasEquirectangular([lat, long, latitude, longitude]);
+    const{ latitude, longitude } = (e.now.active)? e.now.location : e.location;
+    obj.vicinity = PythagorasEquirectangular([lat, long, parseFloat(latitude), parseFloat(longitude)]);
     return obj;
   });
 }
+
 
 module.exports.vicinityCalculator = vicinityCalculator;
