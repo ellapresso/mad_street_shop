@@ -12,7 +12,7 @@ const server = http.createServer(app);
 
 // body-parser, post 요청시 body 데이터 추출 하기 위함
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false, type: true }));
 app.use(cors({ origin: [/localhost/] }));
 // 라우트 설정
 api.route(app);
@@ -23,7 +23,7 @@ database();
 /**
  * 처리하지 못한 예외 로그 기록
  */
-process.on("uncaughtException", err => {
+process.on("uncaughtException", (err) => {
   console.error("UncaughtException", `[${err.name}] ${err.message}`);
   console.error("UncaughtException", err.stack);
 });
