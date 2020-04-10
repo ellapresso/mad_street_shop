@@ -1,5 +1,6 @@
 const Users = require("../../model/Users");
 const axios = require("axios");
+const moment = require("moment");
 
 function kakaoLogin(req, res) {
   const token = req.headers.authorization;
@@ -8,9 +9,9 @@ function kakaoLogin(req, res) {
     method: "get",
     url: "https://kapi.kakao.com/v2/user/me",
     headers: { Authorization: token },
-    responseType: "json"
+    responseType: "json",
   })
-    .then(async function(response) {
+    .then(async function (response) {
       const user = response.data;
       const userId = user.id;
 
@@ -19,9 +20,11 @@ function kakaoLogin(req, res) {
         const userData = {
           kakao: {
             nickname: user.kakao_account.profile.nickname,
-            profileLink: user.kakao_account.profile.thumbnail_image_url
+            profileLink: user.kakao_account.profile.thumbnail_image_url,
           },
-          isUser: false
+          isUser: false,
+          deleted: false,
+          createdAt: moment().format("YYYY-MM-DD h:mm:ssa"),
         };
         await Users.findOneAndUpdate({ userId }, userData, { upsert: true });
         return res.status(404).send({ isUser: false, userId });
@@ -42,14 +45,14 @@ function kakaoLogin(req, res) {
         useProfile: isUser.useProfile,
         kakao: {
           nickname: isUser.kakao.nickname,
-          profileLink: isUser.kakao.profileLink
+          profileLink: isUser.kakao.profileLink,
         },
         isUser: isUser.isUser, //회원가입이전 로그인시 false
-        deleted: isUser.deleted //회원탈퇴시 true
+        deleted: isUser.deleted, //회원탈퇴시 true
       };
       return res.send({ isUser: isUser.isUser, userInfo });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(`[login error] ${err}`);
       return res.status(500).send(err.message);
     });

@@ -10,7 +10,7 @@ const UsersSchema = new mongoose.Schema({
   kakao: { type: Object, default: {} },
   owner: { type: Boolean, default: false },
   isUser: { type: Boolean, default: false },
-  deleted: { type: Boolean, default: null },
+  deleted: { type: Boolean, default: false },
   createdAt: { type: String, default: currentTime },
 });
 

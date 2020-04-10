@@ -19,7 +19,7 @@ const tokenCheck = (token) => {
 
 const isUser = async (userId) => {
   const user = await User.findOne(
-    { userId, isUser: true, deleted: false || null },
+    { userId, isUser: true, deleted: false },
     "-__v"
   ).catch((err) => err);
   //유저일 경우 유저데이터, 아닐결우 null을 반환 함.
@@ -28,7 +28,7 @@ const isUser = async (userId) => {
 
 const isUserYet = async (userId) => {
   const user = await User.findOne(
-    { userId, isUser: false, deleted: false || null },
+    { userId, isUser: false, deleted: false },
     "-_id -__v"
   ).catch((err) => err);
   //데이터는 있지만 가입절차가 진행되지 않은 유저일 경우 유저데이터, 아닐결우 null을 반환 함.
