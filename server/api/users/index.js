@@ -6,6 +6,6 @@ router.get("/whoamI", require("./whoamI"));
 router.post("/join/:isOwner", upload.array("files", 11), require("./join"));
 router.post("/login", require("./login"));
 router.post("/logout", require("./logout"));
-router.put("/:userId", require("./update"));
+router.put("/:userId", require("./updateUser"));
 
 module.exports = router;
