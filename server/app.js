@@ -12,8 +12,24 @@ const server = http.createServer(app);
 
 // body-parser, post 요청시 body 데이터 추출 하기 위함
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false, type: true }));
-app.use(cors({ origin: [/localhost/] }));
+app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(cors({ origin: [/localhost/] }));
+const acceptList = [
+  /mad-street-shop\.now\.sh/,
+  /localhost/,
+  /mad-street-shop\.kimhaein\.now\.sh/,
+];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (acceptList.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+app.use(cors(corsOptions));
+
 // 라우트 설정
 api.route(app);
 
