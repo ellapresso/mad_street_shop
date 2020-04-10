@@ -1,23 +1,28 @@
 const Users = require("../../model/Users");
 const Shops = require("../../model/Shops");
-const { isUser, isUserYet } = require("../../module/oAuth");
+const { isUserYet, checkAll, tokenCheck } = require("../../module/oAuth");
 
 async function join(req, res) {
   const { isOwner } = req.params; //owner or user
   const types = ["owner", "user"];
   if (types.indexOf(isOwner) === -1) return res.sendStatus(403);
+  const token = req.headers.authorization;
+  const { userId } = req.body;
+  const user = await checkAll(userId, token);
 
-  //TODO:잘못된 유저아이디 혹은 찾을수 없는 유저아이디의 경우에 대한 예외처리 필요
-  if (await isUser(req.body.userId)) {
+  if (`${await tokenCheck(token)}` !== userId) {
+    return res.sendStatus(404);
+  }
+
+  if (!!user) {
     return res.status(302).send("이미 가입되어있는 사용자 입니다.");
-  } else if (!(await isUserYet(req.body.userId))) {
+  } else if (!(await isUserYet(userId))) {
     return res.status(404).send("카카오 로그인을 먼저해주세요");
   }
 
   if (isOwner === "owner") {
     //사장님 가입
     const {
-      userId,
       userName,
       mobile,
       useMobile,
@@ -30,7 +35,7 @@ async function join(req, res) {
       openTime,
       closeTime,
       shopComment,
-      useKakao
+      useKakao,
     } = req.body;
 
     if (
@@ -49,7 +54,7 @@ async function join(req, res) {
       res.status(400).send("입력 필수값을 확인해주세요");
     }
 
-    const imageUrl = req.files.map(e => e.location);
+    const imageUrl = req.files.map((e) => e.location);
 
     await Shops.create({
       shopName,
@@ -63,11 +68,11 @@ async function join(req, res) {
       closeTime,
       location: {
         longitude: longitude || null,
-        latitude: latitude || null
+        latitude: latitude || null,
       },
       locationComment: locationComment || "",
       ownerComment: shopComment || "",
-      imageUrl
+      imageUrl,
     })
       .then(
         await Users.updateOne(
@@ -75,44 +80,34 @@ async function join(req, res) {
           {
             isUser: true,
             owner: true,
-            "kakao.active": useKakao
+            "kakao.active": useKakao,
           },
           { upsert: true }
         )
           .then(res.sendStatus(200))
-          .catch(err => res.status(500).send(err))
+          .catch((err) => res.status(500).send(err))
       )
-      .catch(err => {
+      .catch((err) => {
         res.status(500).send(err);
       });
   }
 
   if (isOwner === "user") {
     //일반회원 가입
-    const { nickName, userId, useKakao, category } = req.body;
     await Users.updateOne(
       { userId, isUser: false },
       {
-        nickName,
         isUser: true,
         owner: false,
-        "kakao.active": useKakao,
-        userTags: JSON.parse(category)
+        userTags: JSON.parse(req.body.category),
       },
       { upsert: true }
     )
       .then(res.sendStatus(200))
-      .catch(err => {
+      .catch((err) => {
         res.status(500).send(err);
       });
   }
-}
-
-function removeSpace(arr) {
-  /**배열의 빈값 제거 */
-  return arr.filter(e => {
-    return e !== "";
-  });
 }
 
 module.exports = join;
