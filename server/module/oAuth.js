@@ -31,7 +31,6 @@ const isUserYet = async (userId) => {
     { userId, isUser: false, deleted: false || null },
     "-_id -__v"
   ).catch((err) => err);
-
   //데이터는 있지만 가입절차가 진행되지 않은 유저일 경우 유저데이터, 아닐결우 null을 반환 함.
   return user;
 };
