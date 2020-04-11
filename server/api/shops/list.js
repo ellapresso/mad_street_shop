@@ -3,7 +3,7 @@ const _ = require("lodash");
 const { vicinityCalculator } = require("../../module/formula");
 
 async function shopList(req, res) {
-  const { lat, long, type, active } = req.query;
+  const { lat, long, type, active, shopName } = req.query;
   const range = req.query.range || 10000;
 
   if (!lat || !long) {
@@ -18,8 +18,9 @@ async function shopList(req, res) {
       : null;
 
   const shopList = await shops.find(
-    shopActive,
-    "-deleted -deletedAt -createdAt -updatedAt -__v"
+    shopActive,"-deleted -deletedAt -createdAt -updatedAt -__v",{
+      $text : {$search : `\"${shopName}\"`}
+    },
   )
   const mainList = vicinityCalculator(lat, long, shopList);
 
