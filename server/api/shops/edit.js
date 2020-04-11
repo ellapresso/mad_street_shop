@@ -2,8 +2,9 @@
 const shops = require("../../model/Shops");
 const { tokenCheck } = require("../../module/oAuth");
 const { shopUpdate,shopDetail } = require("../../module/shop");
+let cron = require('node-cron');
 
-async function edit(req, res){
+async function operationEdit(req, res){
     const token = req.headers.authorization;
     const { shopId } = req.params;
     const { userId, closeTime } = req.body;
@@ -19,10 +20,13 @@ async function edit(req, res){
         openTime : shopData.openTime,
         closeTime : closeTime
     }
-    shopUpdate(shopId, userId, updateInfo).catch(e => {
+    shopUpdate(shopId, userId, updateInfo)
+    .then((cron.schedule(`00 ${updateInfo.closeTime.split(":")[0]} ${updateInfo.closeTime.split(":")[1]} * * *`, shopUpdate(shopId, userId, { active : false }))))
+    .catch(e => {
+        console.error(e)
         return res.sendStatus(500);
     })
     return res.sendStatus(200)
 }
 
-module.exports = edit;
+module.exports = operationEdit;
