@@ -3,7 +3,12 @@ const router = express.Router();
 const upload = require("../../module/uploadFile");
 
 router.get("/whoamI", require("./whoamI"));
-router.post("/join/:isOwner", upload.array("files", 11), require("./join"));
+router.post("/join/:isOwner", require("./join"));
+router.put(
+  "/upload-img/:userId/:shopId",
+  upload.array("files", 11),
+  require("./upload")
+);
 router.post("/login", require("./login"));
 router.post("/logout", require("./logout"));
 router.put("/:userId", require("./updateUser"));
