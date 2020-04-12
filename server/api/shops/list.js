@@ -14,7 +14,7 @@ async function shopList(req, res) {
 
   const shopList = (active === "true" || active === "false")? 
     await shops.find({"shopName": { $regex: search, $options : 'i'},"now.active": active, deleted: false},"-deleted -deletedAt -createdAt -updatedAt -__v")
-    : await shops.find({"shopName": { $regex: search, $options : 'i'}},"-deleted -deletedAt -createdAt -updatedAt -__v");
+    : await shops.find({"shopName": { $regex: search, $options : 'i'}, deleted : false},"-deleted -deletedAt -createdAt -updatedAt -__v");
 
   const mainList = vicinityCalculator(lat, long, shopList);
 
