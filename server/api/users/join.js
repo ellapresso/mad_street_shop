@@ -1,6 +1,7 @@
 const Users = require("../../model/Users");
 const Shops = require("../../model/Shops");
 const { isUserYet, checkAll, tokenCheck } = require("../../module/oAuth");
+const { findShopID } = require("../../module/shop");
 
 async function join(req, res) {
   const { isOwner } = req.params; //owner or user
@@ -54,8 +55,6 @@ async function join(req, res) {
       res.status(400).send("입력 필수값을 확인해주세요");
     }
 
-    const imageUrl = req.files.map((e) => e.location);
-
     await Shops.create({
       shopName,
       shopOwner: userId,
@@ -72,7 +71,7 @@ async function join(req, res) {
       },
       locationComment: locationComment || "",
       ownerComment: shopComment || "",
-      imageUrl,
+      // imageUrl,
     })
       .then(
         await Users.updateOne(
@@ -84,7 +83,10 @@ async function join(req, res) {
           },
           { upsert: true }
         )
-          .then(res.sendStatus(200))
+          .then(async (result) => {
+            const shopId = await findShopID(userId);
+            return res.send({ shopId: shopId._id });
+          })
           .catch((err) => res.status(500).send(err))
       )
       .catch((err) => {

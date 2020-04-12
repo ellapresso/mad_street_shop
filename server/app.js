@@ -22,7 +22,6 @@ const acceptList = [
 ];
 var corsOptions = {
   origin: function (origin, callback) {
-    console.log(origin);
     if (acceptList.indexOf(origin) !== -1) {
       callback(null, true);
     } else {

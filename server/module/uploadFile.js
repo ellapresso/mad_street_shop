@@ -5,7 +5,7 @@ const config = require("../config/environment");
 
 const s3 = new AWS.S3({
   accessKeyId: config.aws.ID,
-  secretAccessKey: config.aws.SECRET
+  secretAccessKey: config.aws.SECRET,
 });
 
 const upload = multer({
@@ -19,11 +19,12 @@ const upload = multer({
     contentType: (req, file, cb) => {
       cb(null, file.mimetype);
     },
-    key: function(req, file, cb) {
-      const { shopName, userId } = req.body;
-      cb(null, shopName + "_" + userId + "/" + file.originalname);
-    }
-  })
+    key: function (req, file, cb) {
+      const { userId, shopId } = req.params;
+
+      cb(null, shopId + "_" + userId + "/" + file.originalname);
+    },
+  }),
 });
 
 module.exports = upload;
