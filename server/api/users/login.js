@@ -27,7 +27,7 @@ function kakaoLogin(req, res) {
           createdAt: moment().format("YYYY-MM-DD h:mm:ssa"),
         };
         await Users.findOneAndUpdate({ userId }, userData, { upsert: true });
-        return res.status(404).send({ isUser: false, userId });
+        return res.status(202).send({ isUser: false, userId });
       }
 
       //새로 로그인 한 경우 새로운 데이터로 저장
