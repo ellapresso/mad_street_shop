@@ -12,17 +12,15 @@ async function updateShop(req, res) {
   if (!user) return res.sendStatus(403);
 
   const findShopId = await findShopID(shopOwner);
-  console.log(findShopId);
-  console.log(shopId);
-  const a = findShopId.indexOf(shopId);
+  const shops = findShopId.map((e) => e.toString());
 
-  console.log(a);
+  const hasShop = shops.indexOf(shopId);
 
-  if (shopId !== findShopId) return res.sendStatus(403);
-  delete body.userId;
-  // await Shops.findOneAndUpdate({ _id: shopId, shopOwner }, body)
-  //   .then(res.sendStatus(200))
-  //   .catch((err) => res.send(err));
+  if (hasShop < 0) return res.sendStatus(403);
+
+  await Shops.findOneAndUpdate({ _id: shopId, shopOwner }, body)
+    .then(res.sendStatus(200))
+    .catch((err) => res.send(err));
 }
 
 module.exports = updateShop;
