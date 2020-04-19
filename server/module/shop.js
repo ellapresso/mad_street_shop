@@ -21,6 +21,13 @@ const findShopID = async (shopOwner) => {
     " -__v -deleted -deletedAt -updatedAt -createdAt"
   );
 };
+
+// owner의 userId로 찾음
+const ownerDetail = async (shopOwner) => {
+  return await Shops.find({ shopOwner, deleted: false });
+};
+
 module.exports.shopDetail = shopDetail;
 module.exports.shopUpdate = shopUpdate;
 module.exports.findShopID = findShopID;
+module.exports.ownerDetail = ownerDetail;
