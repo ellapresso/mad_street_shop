@@ -1,4 +1,5 @@
 const { checkAll } = require("../../module/oAuth");
+
 const { ownerDetail } = require("../../module/shop");
 
 async function whoamI(req, res) {

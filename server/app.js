@@ -10,14 +10,10 @@ const database = require("./config/database");
 const app = express();
 const server = http.createServer(app);
 
-// body-parser, post 요청시 body 데이터 추출 하기 위함
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(cors({ origin: [/localhost/] }));
+
 const acceptList = [
-  // /mad-street-shop\.now\.sh/,
-  // /localhost/,
-  // /mad-street-shop\.kimhaein\.now\.sh/,
   "https://localhost:3000",
   "http://localhost:3000",
   "https://localhost:9876",
@@ -26,7 +22,6 @@ const acceptList = [
 ];
 var corsOptions = {
   origin: function (origin, callback) {
-    console.log(origin);
     if (acceptList.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -37,7 +32,6 @@ var corsOptions = {
 // app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 
-// 라우트 설정
 api.route(app);
 
 // use database
@@ -60,7 +54,7 @@ process.on("uncaughtException", (err) => {
 process.on("SIGINT", () => {
   server.close(() => {
     console.info("APP", "close.");
-    // database.mongooseDb.close();
+    database.mongooseDb.close();
     process.exit(0);
   });
 });

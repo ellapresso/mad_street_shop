@@ -1,7 +1,7 @@
 const { tokenCheck } = require("../../module/oAuth");
 const { shopUpdate,shopDetail } = require("../../module/shop");
 
-async function close(req, res){
+async function operationClose(req, res){
     const token = req.headers.authorization;
     const { shopId } = req.params;
     const { userId } = req.body;
@@ -18,4 +18,4 @@ async function close(req, res){
     return res.sendStatus(200)  
 }
 
-module.exports = close;
+module.exports = operationClose;
