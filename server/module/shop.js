@@ -45,5 +45,3 @@ const findShopName = async (shopOwner, ShopName) => {
 module.exports.shopDetail = shopDetail;
 module.exports.shopUpdate = shopUpdate;
 module.exports.findShopID = findShopID;
-module.exports.ownerDetail = ownerDetail;
-module.exports.findShopName = findShopName;
