@@ -34,8 +34,8 @@ var corsOptions = {
     }
   },
 };
-app.options("*", cors(corsOptions));
-// app.use(cors(corsOptions));
+// app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
 
 // 라우트 설정
 api.route(app);
