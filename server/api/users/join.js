@@ -11,10 +11,6 @@ async function join(req, res) {
   const { userId } = req.body;
   const user = await checkAll(userId, token);
 
-  if (`${await tokenCheck(token)}` !== userId) {
-    return res.sendStatus(404);
-  }
-
   if (!!user) {
     return res.status(302).send("이미 가입되어있는 사용자 입니다.");
   } else if (!(await isUserYet(userId))) {
