@@ -1,7 +1,7 @@
 const Users = require("../../model/Users");
 const Shops = require("../../model/Shops");
 const { isUserYet, checkAll, tokenCheck } = require("../../module/oAuth");
-const { findShopID } = require("../../module/shop");
+const { findShopName } = require("../../module/shop");
 
 async function join(req, res) {
   const { isOwner } = req.params; //owner or user
@@ -84,7 +84,7 @@ async function join(req, res) {
           { upsert: true }
         )
           .then(async (result) => {
-            const shopId = await findShopID(userId);
+            const shopId = await findShopName(userId, shopName);
             return res.send({ shopId: shopId._id });
           })
           .catch((err) => res.status(500).send(err))
