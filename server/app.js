@@ -29,8 +29,8 @@ var corsOptions = {
     }
   },
 };
-app.options(cors(corsOptions));
-// app.use(cors(corsOptions));
+// app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
 
 api.route(app);
 
