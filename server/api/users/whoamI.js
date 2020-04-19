@@ -1,4 +1,5 @@
 const { checkAll } = require("../../module/oAuth");
+//ERROR 없는 함수 ownerDetail
 const { ownerDetail } = require("../../module/shop");
 
 async function whoamI(req, res) {
