@@ -12,6 +12,7 @@ const route = app => {
   app.use("/api/shops", require("./shops"));
   app.use("/api/favorites", require("./favorites"));
   app.use("/api/tags", require("./tags"));
+  app.use("/api/notice", require("./notice"));
 
   return app;
 };
