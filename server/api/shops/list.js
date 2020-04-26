@@ -3,7 +3,7 @@ const _ = require("lodash");
 const { vicinityCalculator } = require("../../module/formula");
 
 async function shopList(req, res) {
-  const { lat, long, type, active } = req.query;
+  const { lat, long, type, active, search } = req.query;
   const range = req.query.range || 10000;
 
   if (!lat || !long) {
@@ -12,15 +12,10 @@ async function shopList(req, res) {
       .send("Can not found your location. please enable your GPS");
   }
 
-  const shopActive =
-    active === "true" || active === "false"
-      ? { "now.active": active, deleted: false }
-      : null;
+  const shopList = (active === "true" || active === "false")? 
+    await shops.find({$or:[{"shopName": new RegExp(search)},{"shopTags.item": new RegExp(search)}],"now.active": active, deleted: false},"-deleted -deletedAt -createdAt -updatedAt -__v")
+    : await shops.find({$or:[{"shopName": new RegExp(search)}, {"shopTags.item": new RegExp(search)}]},"-deleted -deletedAt -createdAt -updatedAt -__v");
 
-  const shopList = await shops.find(
-    shopActive,
-    "-deleted -deletedAt -createdAt -updatedAt -__v"
-  )
   const mainList = vicinityCalculator(lat, long, shopList);
 
   const limitResult = mainList.filter(l => {
