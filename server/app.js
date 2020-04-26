@@ -20,6 +20,7 @@ const acceptList = [
   "https://mad-street-shop.kimhaein.now.sh",
   "https://mad-street-shop.now.sh",
 ];
+
 var corsOptions = {
   origin: function (origin, callback) {
     if (acceptList.indexOf(origin) !== -1) {
@@ -29,6 +30,7 @@ var corsOptions = {
     }
   },
 };
+
 // app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 
@@ -47,7 +49,6 @@ process.on("uncaughtException", (err) => {
 
 /**
  * 서버 종료시 후처리
- *  - 소켓서버 종료
  *  - 실시간 서버 연결 종료
  *  - 데이터베이스 커넥션 종료
  */
