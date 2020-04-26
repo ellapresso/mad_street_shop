@@ -32,7 +32,6 @@ const ownerDetail = async (shopOwner) => {
   return await Shops.find({ shopOwner, deleted: false });
 };
 
-
 const findShopName = async (shopOwner, ShopName) => {
   const shop = await Shops.findOne(
     { shopOwner, ShopName, deleted: false },
@@ -45,3 +44,5 @@ const findShopName = async (shopOwner, ShopName) => {
 module.exports.shopDetail = shopDetail;
 module.exports.shopUpdate = shopUpdate;
 module.exports.findShopID = findShopID;
+module.exports.ownerDetail = ownerDetail;
+module.exports.findShopName = findShopName;
