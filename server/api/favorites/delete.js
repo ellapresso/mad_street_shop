@@ -11,7 +11,7 @@ async function deleted(req, res) {
   if (!isShop) return res.sendStatus(302);
 
   const user = await checkAll(userId, token);
-
+  if(!user) return res.sendStatus(403)
   user.favoriteShops = user.favoriteShops.filter(e => (e = !shopId));
 
   user.save();

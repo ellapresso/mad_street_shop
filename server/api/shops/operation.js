@@ -1,5 +1,5 @@
 const { shopUpdate,shopDetail } = require("../../module/shop");
-const { tokenCheck } = require("../../module/oAuth");
+const { checkAll } = require("../../module/oAuth");
 const moment = require('moment')
 let cron = require('node-cron')
 
@@ -8,8 +8,8 @@ async function operation(req, res){
     const token = req.headers.authorization;
     const { shopId } = req.params;
     const { userId, openTime, closeTime, long, lat, locationComment } = req.body;
-    const isUserToken = await tokenCheck(token);
-    if (isUserToken !== 200 || !userId) return res.sendStatus(403);
+    const user = await checkAll(userId, token);
+    if(!user) return res.sendStatus(403)
     const shopInfo = await shopDetail(shopId);
     if (shopInfo.shopOwner != userId) return res.sendStatus(403);
     let closeTimeSet;
