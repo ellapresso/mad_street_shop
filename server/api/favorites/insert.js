@@ -6,7 +6,7 @@ async function insert(req, res) {
   const { userId, shopId } = req.body;
 
   const user = await checkAll(userId, token);
-
+  if(!user) return res.sendStatus(403)
   const isShop = await Shops.findOne({ _id: shopId, deleted: false });
   if (!isShop) return res.sendStatus(404);
 

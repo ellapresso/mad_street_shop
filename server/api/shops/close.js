@@ -1,12 +1,12 @@
-const { tokenCheck } = require("../../module/oAuth");
+const { checkAll } = require("../../module/oAuth");
 const { shopUpdate,shopDetail } = require("../../module/shop");
 
 async function operationClose(req, res){
     const token = req.headers.authorization;
     const { shopId } = req.params;
     const { userId } = req.body;
-    const isUserToken = await tokenCheck(token);
-    if (isUserToken !== 200 || !userId) return res.sendStatus(403);
+    const user = await checkAll(userId, token);
+    if(!user) return res.sendStatus(403)
     const shopInfo = await shopDetail(shopId);
     if (shopInfo.shopOwner != userId) return res.sendStatus(403);
     const updateInfo = {

@@ -11,7 +11,7 @@ async function list(req, res) {
   const data = [];
 
   const user = await checkAll(userId, token);
-
+  if(!user) return res.sendStatus(403)
   const shops = await Users.findOne({ userId, isUser: true })
     .then(res => res.favoriteShops)
     .catch(err => res.sendStatus(403).send(err));
