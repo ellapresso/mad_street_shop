@@ -1,7 +1,7 @@
 const Users = require("../../model/Users");
 const Shops = require("../../model/Shops");
 const { isUserYet, checkAll, tokenCheck } = require("../../module/oAuth");
-const { findShopName } = require("../../module/shop");
+const { makeOwner } = require("../../module/shop");
 
 async function join(req, res) {
   const { isOwner } = req.params; //owner or user
@@ -11,10 +11,11 @@ async function join(req, res) {
   const { userId } = req.body;
   const user = await checkAll(userId, token);
 
+  //TODO :토큰 체크 및 본인인증 수정필요
   if (!!user) {
     return res.status(302).send("이미 가입되어있는 사용자 입니다.");
-  } else if (!(await isUserYet(userId))) {
-    return res.status(404).send("카카오 로그인을 먼저해주세요");
+  } else if ((await isUserYet(userId)) === 401) {
+    return res.sendStatus(401);
   }
 
   if (isOwner === "owner") {
@@ -51,7 +52,7 @@ async function join(req, res) {
       res.status(400).send("입력 필수값을 확인해주세요");
     }
 
-    await Shops.create({
+    const data = {
       shopName,
       shopOwner: userId,
       ownerName: userName,
@@ -67,27 +68,11 @@ async function join(req, res) {
       },
       locationComment: locationComment || "",
       ownerComment: shopComment || "",
-      // imageUrl,
-    })
-      .then(
-        await Users.updateOne(
-          { userId, isUser: false },
-          {
-            isUser: true,
-            owner: true,
-            "kakao.active": useKakao,
-          },
-          { upsert: true }
-        )
-          .then(async (result) => {
-            const shopId = await findShopName(userId, shopName);
-            return res.send({ shopId: shopId._id });
-          })
-          .catch((err) => res.status(500).send(err))
-      )
-      .catch((err) => {
-        res.status(500).send(err);
-      });
+    };
+
+    return await makeOwner(data)
+      .then(res.sendStatus(200))
+      .catch((err) => res.send(err)); //TODO:수정 필요함.
   }
 
   if (isOwner === "user") {

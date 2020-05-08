@@ -14,6 +14,7 @@ const tokenCheck = (token) => {
     })
     .catch((err) => {
       console.log("토큰확인요청실패 : ", err.response.data.msg);
+      return err;
     });
 };
 
@@ -28,11 +29,13 @@ const isUser = async (userId) => {
 
 const isUserYet = async (userId) => {
   const user = await User.findOne(
-    { userId, isUser: false, deleted: false },
+    { userId, deleted: false },
     "-_id -__v"
   ).catch((err) => err);
-  //데이터는 있지만 가입절차가 진행되지 않은 유저일 경우 유저데이터, 아닐결우 null을 반환 함.
-  return user;
+  if (user.isUser) {
+    return 401;
+  }
+  return;
 };
 
 const checkAll = async (userId, token) => {
