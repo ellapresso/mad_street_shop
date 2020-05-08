@@ -12,5 +12,6 @@ router.put(
 router.post("/login", require("./login"));
 router.post("/logout", require("./logout"));
 router.put("/:userId", require("./updateUser"));
+router.put("/:userId/user-to-owner", require("./userToOwner"));
 
 module.exports = router;

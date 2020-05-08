@@ -1,4 +1,5 @@
 const Shops = require("../model/Shops");
+const Users = require("../model/Users");
 
 const shopDetail = async (shopId) => {
   return await Shops.findOne(
@@ -41,8 +42,29 @@ const findShopName = async (shopOwner, ShopName) => {
   return shop;
 };
 
+const makeOwner = async (data) => {
+  await Shops.create(data)
+    .then(
+      await Users.updateOne(
+        { userId: data.shopOwner },
+        {
+          isUser: true,
+          owner: true,
+          "kakao.active": data.useKakao,
+        },
+        { upsert: true }
+      ).catch((err) => {
+        err;
+      })
+    )
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
 module.exports.shopDetail = shopDetail;
 module.exports.shopUpdate = shopUpdate;
 module.exports.findShopID = findShopID;
 module.exports.ownerDetail = ownerDetail;
 module.exports.findShopName = findShopName;
+module.exports.makeOwner = makeOwner;
