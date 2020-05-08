@@ -5,7 +5,7 @@ const cors = require("cors");
 const api = require("./api");
 const config = require("./config/environment");
 const database = require("./config/database");
-
+const { corsOptions } = require("./module/cors");
 // create server
 const app = express();
 const server = http.createServer(app);
@@ -13,25 +13,6 @@ const server = http.createServer(app);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const acceptList = [
-  "https://localhost:3000",
-  "http://localhost:3000",
-  "https://localhost:9876",
-  "https://mad-street-shop.kimhaein.now.sh",
-  "https://mad-street-shop.now.sh",
-];
-
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (acceptList.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
-
-// app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 
 api.route(app);
