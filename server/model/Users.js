@@ -11,6 +11,7 @@ const UsersSchema = new mongoose.Schema({
   owner: { type: Boolean, default: false },
   isUser: { type: Boolean, default: false },
   deleted: { type: Boolean, default: false },
+  deletedAt: { type: String, default: null },
   createdAt: { type: String, default: currentTime },
 });
 
