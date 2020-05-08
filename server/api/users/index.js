@@ -11,6 +11,7 @@ router.put(
 );
 router.post("/login", require("./login"));
 router.post("/logout", require("./logout"));
+router.delete("/:userId/leave", require("./leave"));
 router.put("/:userId", require("./updateUser"));
 router.put("/:userId/user-to-owner", require("./userToOwner"));
 
