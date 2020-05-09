@@ -28,6 +28,15 @@ process.on("uncaughtException", (err) => {
   console.error("UncaughtException", err.stack);
 });
 
+/* CORS 처리 */
+app.all("*", (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin || "");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  next();
+});
+
 /**
  * 서버 종료시 후처리
  *  - 실시간 서버 연결 종료
