@@ -6,6 +6,7 @@ const acceptList = [
 ];
 
 module.exports.corsOptions = function (req, callback) {
+  console.log("cors >> ", req.headers);
   if (acceptList.indexOf(req.headers.host) !== -1) {
     callback(null, { origin: true });
   } else {
