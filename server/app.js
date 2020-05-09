@@ -30,6 +30,7 @@ process.on("uncaughtException", (err) => {
 
 /* CORS 처리 */
 app.all("*", (req, res, next) => {
+  console.log("app >> ", req.headers.origin);
   res.header("Access-Control-Allow-Origin", req.headers.origin || "");
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
