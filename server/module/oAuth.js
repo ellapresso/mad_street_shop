@@ -32,7 +32,7 @@ const isUserYet = async (userId) => {
     { userId, deleted: false },
     "-_id -__v"
   ).catch((err) => err);
-  if (user.isUser) {
+  if (!!user.isUser) {
     return 401;
   }
   return;
