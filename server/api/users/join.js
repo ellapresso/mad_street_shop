@@ -11,6 +11,8 @@ async function join(req, res) {
   const { userId } = req.body;
   const user = await checkAll(userId, token);
 
+  console.info("userId : ", userId);
+  console.info("token : ", token);
   //TODO :토큰 체크 및 본인인증 수정필요
   if (!!user) {
     return res.status(302).send("이미 가입되어있는 사용자 입니다.");

@@ -20,6 +20,7 @@ async function leave(req, res) {
       });
     }
     user.deletedAt = currentTime;
+    user.isUser = false;
     user.deleted = true;
     user.save();
     return res.sendStatus(200);
