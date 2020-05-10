@@ -35,12 +35,15 @@ const isUserYet = async (userId) => {
     "-_id -__v"
   ).catch((err) => err);
   if (user.isUser) {
+    logger.debug("토큰확인 필요");
     return 401;
   }
+  logger.log("유저를 찾을수 없음");
   return;
 };
 
 const checkAll = async (userId, token) => {
+  logger.log(`${userId}의 요청 토큰값 : ${token}`);
   const user = await isUser(userId);
   const tokenChk = await tokenCheck(token);
 
