@@ -1,6 +1,7 @@
 const Users = require("../../model/Users");
 const axios = require("axios");
 const moment = require("moment");
+const { logger } = require("../../module/logger");
 
 function kakaoLogin(req, res) {
   const token = req.headers.authorization;
@@ -15,7 +16,7 @@ function kakaoLogin(req, res) {
       const user = response.data;
       const userId = user.id;
 
-      const isUser = await Users.findOne({ userId: user.id, isUser: true });
+      const isUser = await Users.findOne({ userId, isUser: true });
       if (!isUser) {
         const userData = {
           kakao: {
@@ -27,6 +28,7 @@ function kakaoLogin(req, res) {
           createdAt: moment().format("YYYY-MM-DD h:mm:ssa"),
         };
         await Users.findOneAndUpdate({ userId }, userData, { upsert: true });
+        logger.log(`로그인 실패 : ${userId}`);
         return res.status(202).send({ isUser: false, userId });
       }
 
@@ -50,6 +52,8 @@ function kakaoLogin(req, res) {
         isUser: isUser.isUser, //회원가입이전 로그인시 false
         deleted: isUser.deleted, //회원탈퇴시 true
       };
+      logger.log(`로그인 성공 : ${userId}`);
+
       return res.send({ isUser: isUser.isUser, userInfo });
     })
     .catch((err) => {

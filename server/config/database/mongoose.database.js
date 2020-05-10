@@ -1,6 +1,7 @@
 const config = require("../environment");
 const mongoose = require("mongoose");
 const env = config.database.mongoosedb;
+const { logger } = require("../../module/logger");
 
 const mongooseDb = () => {
   function connect() {
@@ -10,14 +11,14 @@ const mongooseDb = () => {
         {
           useNewUrlParser: true,
           useUnifiedTopology: true,
-          useFindAndModify: false
+          useFindAndModify: false,
         }
       )
-      .catch(err => {
-        console.error("[DATABASE] mongoDB Connection Error");
-        console.error(err);
+      .catch((err) => {
+        logger.error("[DATABASE] mongoDB Connection Error");
+        logger.error(err);
       })
-      .then(console.log("[DATABASE] mongoDB Connection Success"));
+      .then(logger.log("[DATABASE] mongoDB Connection Success"));
   }
   connect();
   mongoose.connection.on("[DATABASE] mongoDB Connection disconnected", connect);

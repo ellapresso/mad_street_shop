@@ -1,5 +1,7 @@
 const axios = require("axios");
 const User = require("../model/Users");
+const { logger } = require("./logger");
+
 const tokenCheck = (token) => {
   if (!token) return 403;
   return axios({
@@ -9,11 +11,11 @@ const tokenCheck = (token) => {
     responseType: "json",
   })
     .then((response) => {
-      console.log("토큰확인요청성공 : ", response.statusText);
+      logger.log(`토큰확인요청성공 : ${response.statusText}`);
       return response.data.id;
     })
     .catch((err) => {
-      console.log("토큰확인요청실패 : ", err.response.data.msg);
+      logger.error(`토큰확인요청실패 : ${err.response.data.msg}`);
       return err;
     });
 };

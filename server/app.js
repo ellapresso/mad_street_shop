@@ -6,6 +6,7 @@ const api = require("./api");
 const config = require("./config/environment");
 const database = require("./config/database");
 const { corsOptions } = require("./module/cors");
+const { logger } = require("./module/logger");
 // create server
 const app = express();
 const server = http.createServer(app);
@@ -24,8 +25,8 @@ database();
  * 처리하지 못한 예외 로그 기록
  */
 process.on("uncaughtException", (err) => {
-  console.error("UncaughtException", `[${err.name}] ${err.message}`);
-  console.error("UncaughtException", err.stack);
+  logger.error(`UncaughtException : [${err.name}] ${err.message}`);
+  logger.error(`UncaughtException :  ${err.stack}`);
 });
 
 /**
@@ -35,14 +36,14 @@ process.on("uncaughtException", (err) => {
  */
 process.on("SIGINT", () => {
   server.close(() => {
-    console.info("APP", "close.");
+    logger.log("APP close.");
     database.mongooseDb.close();
     process.exit(0);
   });
 });
 
 server.listen(config.port, () => {
-  console.info("[APP]", `listening on port ${config.port}.`);
+  logger.log(`listening on port ${config.port}.`);
 });
 
 module.exports = server;
