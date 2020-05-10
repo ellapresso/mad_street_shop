@@ -10,7 +10,7 @@ module.exports.corsOptions = function (req, callback) {
   // console.log("cors >> ", req.headers);
   if (acceptList.indexOf(req.headers.origin) !== -1) {
     callback(null, { origin: true });
-  } else {
+  } else if (acceptList.indexOf(req.headers.origin) === -1) {
     callback(new Error("Not allowed by CORS"));
   }
 };
