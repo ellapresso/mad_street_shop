@@ -54,7 +54,7 @@ function kakaoLogin(req, res) {
       };
       logger.log(`로그인 성공 : ${userId}`);
 
-      return res.send({ isUser: isUser.isUser, userInfo });
+      return res.send({ userId, isUser: isUser.isUser, userInfo });
     })
     .catch((err) => {
       console.error(`[login error] ${err}`);
