@@ -16,7 +16,11 @@ function kakaoLogin(req, res) {
       const user = response.data;
       const userId = user.id;
 
-      const isUser = await Users.findOne({ userId, isUser: true });
+      const isUser = await Users.findOne({
+        userId,
+        isUser: true,
+        deleted: false,
+      });
       if (!isUser) {
         const userData = {
           kakao: {
