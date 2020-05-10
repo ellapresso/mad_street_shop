@@ -1,7 +1,7 @@
 const Users = require("../../model/Users");
-const Shops = require("../../model/Shops");
 const { isUserYet, checkAll, tokenCheck } = require("../../module/oAuth");
 const { makeOwner } = require("../../module/shop");
+const { logger } = require("../../module/logger");
 
 async function join(req, res) {
   const { isOwner } = req.params; //owner or user
@@ -11,9 +11,6 @@ async function join(req, res) {
   const { userId } = req.body;
   const user = await checkAll(userId, token);
 
-  console.info("userId : ", userId);
-  console.info("category : ", req.body.category);
-  console.info("body : ", req.body);
   //TODO :토큰 체크 및 본인인증 수정필요
   if (!!user) {
     return res.status(302).send("이미 가입되어있는 사용자 입니다.");
@@ -22,6 +19,7 @@ async function join(req, res) {
   }
 
   if (isOwner === "owner") {
+    logger.log(`사장님 회원가입 요청 : ${userId}`);
     //사장님 가입
     const {
       userName,
@@ -79,6 +77,7 @@ async function join(req, res) {
   }
 
   if (isOwner === "user") {
+    logger.log(`일반 회원가입 요청 : ${userId}`);
     //일반회원 가입
     await Users.updateOne(
       { userId, isUser: false },
