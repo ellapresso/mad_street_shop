@@ -29,7 +29,8 @@ async function shopList(req, res) {
       return res.send(result);
 
     case "rank":
-      const rankResult = _.sortBy(limitResult, [{ likeScore: "desc" }]);
+      const rankResult = _.sortBy(limitResult, ["likeScore"]);
+      _.reverse(rankResult);
       return res.send(rankResult);
 
     default:
