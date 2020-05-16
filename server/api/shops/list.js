@@ -4,7 +4,7 @@ const { vicinityCalculator } = require("../../module/formula");
 
 async function shopList(req, res) {
   const { lat, long, type, active, search } = req.query;
-  const range = req.query.range || 10000;
+  const range = (type==="rank")? 3000 : req.query.range || 10000;
 
   if (!lat || !long) {
     return res
@@ -17,7 +17,7 @@ async function shopList(req, res) {
     : await shops.find({$or:[{"shopName": new RegExp(search)}, {"shopTags.item": new RegExp(search)}]},"-deleted -deletedAt -createdAt -updatedAt -__v");
 
   const mainList = vicinityCalculator(lat, long, shopList);
-
+  
   const limitResult = mainList.filter(l => {
     return l.vicinity <= range;
   });
