@@ -66,9 +66,7 @@ const makeOwner = async (data) => {
         err;
       })
     )
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+    .catch((err) => err);
 };
 
 module.exports.shopDetail = shopDetail;
