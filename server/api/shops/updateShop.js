@@ -18,6 +18,20 @@ async function updateShop(req, res) {
 
   if (hasShop < 0) return res.sendStatus(403);
 
+  //location object
+  if (!!body.longitude) {
+    body.location.longitude = body.longitude;
+    delete body.longitude;
+  }
+  if (!!body.latitude) {
+    body.location.latitude = body.latitude;
+    delete body.latitude;
+  }
+  if (!!body.subLocation) {
+    body.location.subLocation = body.subLocation;
+    delete body.subLocation;
+  }
+
   await Shops.findOneAndUpdate({ _id: shopId, shopOwner }, body)
     .then(res.sendStatus(200))
     .catch((err) => res.send(err));
