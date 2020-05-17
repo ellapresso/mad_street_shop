@@ -29,6 +29,7 @@ async function join(req, res) {
       category, //object
       longitude,
       latitude,
+      subLocation,
       locationComment,
       openDays, //Array
       openTime,
@@ -45,6 +46,7 @@ async function join(req, res) {
       !category ||
       !longitude ||
       !latitude ||
+      !subLocation ||
       !openDays ||
       !openTime ||
       !closeTime ||
@@ -66,6 +68,7 @@ async function join(req, res) {
       location: {
         longitude: longitude || null,
         latitude: latitude || null,
+        subLocation: subLocation || "",
       },
       locationComment: locationComment || "",
       ownerComment: shopComment || "",

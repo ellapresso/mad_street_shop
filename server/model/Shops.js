@@ -14,6 +14,7 @@ const ShopsSchema = new mongoose.Schema({
   location: {
     longitude: { type: mongoose.Types.Decimal128, default: null },
     latitude: { type: mongoose.Types.Decimal128, default: null },
+    subLocation: { type: String, default: "" },
   },
   ownerComment: { type: String, default: "감사합니다." },
   likeScore: { type: Number, default: 0 },
@@ -23,6 +24,7 @@ const ShopsSchema = new mongoose.Schema({
     location: {
       longitude: mongoose.Types.Decimal128,
       latitude: mongoose.Types.Decimal128,
+      subLocation: { type: String, default: "" },
     },
     locationComment: { type: String, default: null },
     openTime: { type: String },
