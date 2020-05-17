@@ -72,7 +72,7 @@ async function join(req, res) {
     };
 
     return await makeOwner(data)
-      .then(res.sendStatus(200))
+      .then(res.send(userId))
       .catch((err) => res.send(err)); //TODO:수정 필요함.
   }
 
