@@ -52,7 +52,7 @@ const findShopName = async (shopOwner, ShopName) => {
 
 const makeOwner = async (data) => {
   logger.log(`유저 ${data.shopOwner}의 사장님으로 변환 요청`);
-  await Shops.create(data)
+  return await Shops.create(data)
     .then(
       await Users.updateOne(
         { userId: data.shopOwner },
@@ -66,6 +66,7 @@ const makeOwner = async (data) => {
         err;
       })
     )
+    .then((res) => res)
     .catch((err) => err);
 };
 
