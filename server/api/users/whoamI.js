@@ -4,7 +4,7 @@ const { ownerDetail } = require("../../module/shop");
 
 async function whoamI(req, res) {
   const token = req.headers.authorization;
-  const { userId } = req.body;
+  const { userId } = req.params;
   const user = await checkAll(userId, token);
   if (!user) return res.sendStatus(404);
   if (user.owner) {
