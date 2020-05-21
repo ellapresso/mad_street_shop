@@ -7,6 +7,7 @@ async function upload(req, res) {
   const user = await checkAll(userId, token);
   if (!user) return res.sendStatus(404);
 
+  //기존에 저장되어있던 이미지주소가 사라짐
   const imageUrl = req.files.map((e) => e.location);
   await Shops.findOneAndUpdate(
     { shopOwner: userId, _id: shopId },
