@@ -75,8 +75,8 @@ async function join(req, res) {
     };
 
     return await makeOwner(data)
-      .then(res.send(userId))
-      .catch((err) => res.send(err)); //TODO:수정 필요함.
+      .then((result) => res.send({ shopId: result._id }))
+      .catch((err) => res.send(err));
   }
 
   if (isOwner === "user") {
