@@ -7,8 +7,12 @@ async function whoamI(req, res) {
   const { userId } = req.params;
   const user = await checkAll(userId, token);
   if (!user) return res.sendStatus(404);
+  //TODO : 작업중
   if (user.owner) {
     const shop = await ownerDetail(userId);
+    console.log(shop);
+    shop.useMobile ? "" : (shop.mobile = "");
+    delete shop.__v;
     return res.send({ user, shop });
   }
   return res.send({ user });

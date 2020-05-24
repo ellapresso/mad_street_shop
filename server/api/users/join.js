@@ -75,7 +75,7 @@ async function join(req, res) {
     };
 
     return await makeOwner(data)
-      .then((result) => res.send({ shopId: result._id }))
+      .then((result) => res.send(result))
       .catch((err) => res.send(err));
   }
 
