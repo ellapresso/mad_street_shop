@@ -37,19 +37,12 @@ async function operation(req, res) {
       closeTime || moment(closeTimeSet).add(8, "hours").format("HH:MM"),
   };
   shopUpdate(shopId, userId, updateInfo)
-    .then(
-      cron.schedule(
-        `00 ${updateInfo.closeTime.split(":")[0]} ${
-          updateInfo.closeTime.split(":")[1]
-        } * * *`,
-        shopUpdate(shopId, userId, { active: false })
-      )
-    )
+    .then( () => {
+      return res.sendStatus(200);
+    })
     .catch((e) => {
       return res.sendStatus(500);
     });
-
-  return res.sendStatus(200);
 }
 
 module.exports = operation;
