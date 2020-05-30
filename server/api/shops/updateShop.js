@@ -1,15 +1,9 @@
 const { findShopID } = require("../../module/shop");
 const { checkAll } = require("../../module/oAuth");
 const deleteFile = require("../../module/deleteFile");
+const fileList = require("../../module/fileList");
 const Shops = require("../../model/Shops");
-const AWS = require("aws-sdk");
-const config = require("../../config/environment");
 const { logger } = require("../../module/logger");
-
-const s3 = new AWS.S3({
-  accessKeyId: config.aws.ID,
-  secretAccessKey: config.aws.SECRET,
-});
 
 async function updateShop(req, res) {
   const token = req.headers.authorization;
@@ -30,29 +24,15 @@ async function updateShop(req, res) {
   if (!!body.deleteFiles) {
     const arr = body.deleteFiles.split(",");
     //이미지 삭제
-    for (i in arr) {
+    arr.forEach((i) => {
       deleteFile(i);
       logger.log(`이미지 ${i} 삭제`);
-    }
+    });
 
     delete body.deleteFiles;
 
-    s3.listObjects(
-      {
-        Bucket: "mad-street-shop",
-        Prefix: `${shopId}_${shopOwner}`,
-      },
-      function (err, data) {
-        if (err) {
-          logger.error(err);
-        }
-        const images = data.Contents.map(
-          (e) =>
-            `https://mad-street-shop.s3.ap-northeast-2.amazonaws.com/${e.Key}`
-        );
-        body.imageUrl = images;
-      }
-    );
+    //TODO: promise 비동기 순서지정 필요.
+    await fileList(shopId, shopOwner);
   }
 
   //location object
@@ -67,7 +47,7 @@ async function updateShop(req, res) {
   }
 
   await Shops.findOneAndUpdate({ _id: shopId, shopOwner }, body)
-    .then(res.sendStatus(200))
+    .then((shopInfo) => res.send(shopInfo))
     .catch((err) => res.send(err));
 }
 
