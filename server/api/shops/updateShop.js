@@ -24,15 +24,15 @@ async function updateShop(req, res) {
   if (!!body.deleteFiles) {
     const arr = body.deleteFiles.split(",");
     //이미지 삭제
-    for (i in arr) {
+    arr.forEach((i) => {
       deleteFile(i);
       logger.log(`이미지 ${i} 삭제`);
-    }
+    });
 
     delete body.deleteFiles;
 
-    const a = fileList(`${shopId}_${shopOwner}`);
-    console.log("나와라 >> ", a);
+    //TODO: promise 비동기 순서지정 필요.
+    await fileList(shopId, shopOwner);
   }
 
   //location object
@@ -47,7 +47,7 @@ async function updateShop(req, res) {
   }
 
   await Shops.findOneAndUpdate({ _id: shopId, shopOwner }, body)
-    .then(res.sendStatus(200))
+    .then((shopInfo) => res.send(shopInfo))
     .catch((err) => res.send(err));
 }
 
