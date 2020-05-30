@@ -35,7 +35,7 @@ const findShopID = async (shopOwner) => {
 // owner의 userId로 찾음
 const ownerDetail = async (shopOwner) => {
   logger.log(`유저의 가게정보 요청 : 유저 ${shopOwner}`);
-  return await Shops.find({ shopOwner, deleted: false });
+  return await Shops.findOne({ shopOwner, deleted: false });
 };
 
 const findShopName = async (shopOwner, ShopName) => {

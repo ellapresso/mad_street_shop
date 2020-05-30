@@ -17,6 +17,7 @@ const ShopsSchema = new mongoose.Schema({
     latitude: { type: mongoose.Types.Decimal128, default: null },
     subLocation: { type: String, default: "" },
   },
+  locationComment: { type: String },
   ownerComment: { type: String, default: "감사합니다." },
   likeScore: { type: Number, default: 0 },
   imageUrl: Array,

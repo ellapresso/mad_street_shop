@@ -1,6 +1,9 @@
 const { findShopID } = require("../../module/shop");
 const { checkAll } = require("../../module/oAuth");
+const deleteFile = require("../../module/deleteFile");
+const fileList = require("../../module/fileList");
 const Shops = require("../../model/Shops");
+const { logger } = require("../../module/logger");
 
 async function updateShop(req, res) {
   const token = req.headers.authorization;
@@ -18,14 +21,25 @@ async function updateShop(req, res) {
 
   if (hasShop < 0) return res.sendStatus(403);
 
-  //location object
-  if (!!body.longitude) {
-    body.location.longitude = body.longitude;
-    delete body.longitude;
+  if (!!body.deleteFiles) {
+    const arr = body.deleteFiles.split(",");
+    //이미지 삭제
+    arr.forEach((i) => {
+      deleteFile(i);
+      logger.log(`이미지 ${i} 삭제`);
+    });
+
+    delete body.deleteFiles;
+
+    //TODO: promise 비동기 순서지정 필요.
+    await fileList(shopId, shopOwner);
   }
-  if (!!body.latitude) {
-    body.location.latitude = body.latitude;
+
+  //location object
+  if (!!body.longitude && !!body.latitude) {
+    body.location = { longitude: body.longitude, latitude: body.latitude };
     delete body.latitude;
+    delete body.longitude;
   }
   if (!!body.subLocation) {
     body.location.subLocation = body.subLocation;
@@ -33,7 +47,7 @@ async function updateShop(req, res) {
   }
 
   await Shops.findOneAndUpdate({ _id: shopId, shopOwner }, body)
-    .then(res.sendStatus(200))
+    .then((shopInfo) => res.send(shopInfo))
     .catch((err) => res.send(err));
 }
 
