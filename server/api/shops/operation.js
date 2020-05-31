@@ -1,8 +1,8 @@
-const { shopUpdate, shopDetail } = require("../../module/shop");
+const { shopUpdate, shopDetail, setCron } = require("../../module/shop");
 const { checkAll } = require("../../module/oAuth");
 const moment = require("moment");
 const { logger } = require("../../module/logger");
-let cron = require("node-cron");
+
 
 async function operation(req, res) {
   const token = req.headers.authorization;
@@ -20,7 +20,7 @@ async function operation(req, res) {
   if (!user) return res.sendStatus(403);
   const shopInfo = await shopDetail(shopId);
   
-  if (shopInfo.shopOwner != userId) return res.sendStatus(403);
+  if (shopInfo.shopOwner !== userId) return res.sendStatus(403);
   let closeTimeSet;
   if (openTime)
     closeTimeSet = moment()
@@ -40,14 +40,13 @@ async function operation(req, res) {
   };
   logger.log(`운영 시작 : ${updateInfo}`)
   shopUpdate(shopId, userId, updateInfo)
-    .then(cron.schedule(
-      `00 ${updateInfo.closeTime.split(":")[1]} ${updateInfo.closeTime.split(":")[0]} * * *`, 
-      () => {shopUpdate(shopId, userId, { active: false })}
-    ))
+    .then(setCron(`00 ${updateInfo.closeTime.split(":")[1]} ${updateInfo.closeTime.split(":")[0]} * * *`, updateInfo))
     .catch((e) => {
+      logger.error(`운영 에러 ${e}`)
       return res.sendStatus(500);
     });
-  return res.sendStatus(200);
+  return res.send(updateInfo);
 }
 
 module.exports = operation;
+
