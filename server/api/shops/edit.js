@@ -3,7 +3,6 @@ const { checkAll } = require("../../module/oAuth");
 const { shopUpdate, shopDetail } = require("../../module/shop");
 let cron = require("node-cron");
 
-//TODO: subLocation관련 점검 필요
 async function operationEdit(req, res) {
   const token = req.headers.authorization;
   const { shopId } = req.params;
@@ -25,9 +24,7 @@ async function operationEdit(req, res) {
       cron.schedule(
         `00 ${updateInfo.closeTime.split(":")[0]} ${
           updateInfo.closeTime.split(":")[1]
-        } * * *`,
-        shopUpdate(shopId, userId, { active: false })
-      )
+        } * * *`,() => {shopUpdate(shopId, userId, { active: false })})
     )
     .catch((e) => {
       console.error(e);

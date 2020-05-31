@@ -20,7 +20,7 @@ function vicinityCalculator(lat, long, list) {
   return list.map(e => {
     const obj = e.toObject();
     const{ latitude, longitude } = (e.now.active)? e.now.location : e.location;
-    obj.vicinity = PythagorasEquirectangular([lat, long, parseFloat(latitude), parseFloat(longitude)]);
+    obj.vicinity = PythagorasEquirectangular([lat, long, latitude, longitude]);
     return obj;
   });
 }

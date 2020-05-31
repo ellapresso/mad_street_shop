@@ -15,6 +15,7 @@ async function operation(req, res) {
     locationComment,
     subLocation,
   } = req.body;
+  console.log(long,lat)
   const user = await checkAll(userId, token);
   if (!user) return res.sendStatus(403);
   const shopInfo = await shopDetail(shopId);
@@ -36,6 +37,7 @@ async function operation(req, res) {
     closeTime:
       closeTime || moment(closeTimeSet).add(8, "hours").format("HH:MM"),
   };
+  console.log(updateInfo)
   shopUpdate(shopId, userId, updateInfo)
     .then(cron.schedule(
       `00 ${updateInfo.closeTime.split(":")[1]} ${updateInfo.closeTime.split(":")[0]} * * *`, 
