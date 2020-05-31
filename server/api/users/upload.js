@@ -1,5 +1,4 @@
 const { checkAll } = require("../../module/oAuth");
-const Shops = require("../../model/Shops");
 const { shopDetail } = require("../../module/shop");
 const fileList = require("../../module/fileList");
 

@@ -3,6 +3,7 @@ const { checkAll } = require("../../module/oAuth");
 const deleteFile = require("../../module/deleteFile");
 const fileList = require("../../module/fileList");
 const Shops = require("../../model/Shops");
+const { shopDetail } = require("../../module/shop");
 const { logger } = require("../../module/logger");
 
 async function updateShop(req, res) {
@@ -28,10 +29,7 @@ async function updateShop(req, res) {
       deleteFile(i);
       logger.log(`이미지 ${i} 삭제`);
     });
-
     delete body.deleteFiles;
-
-    await fileList(shopId, shopOwner);
   }
 
   //location object
@@ -45,9 +43,15 @@ async function updateShop(req, res) {
     delete body.subLocation;
   }
 
-  await Shops.findOneAndUpdate({ _id: shopId, shopOwner }, body)
-    .then((shopInfo) => res.send(shopInfo))
-    .catch((err) => res.send(err));
+  try {
+    await Shops.findOneAndUpdate({ _id: shopId, shopOwner }, body);
+    await fileList(shopId, shopOwner)
+      .then((nothing) => shopDetail(shopId))
+      .then((result) => res.send(result));
+  } catch (e) {
+    logger.error(e);
+    return res.send(e);
+  }
 }
 
 module.exports = updateShop;
