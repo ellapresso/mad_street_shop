@@ -22,7 +22,7 @@ const upload = multer({
     },
     key: function (req, file, cb) {
       const { userId, shopId } = req.params;
-      logger.log(file.originalname);
+      logger.log(`이미지 업로드 요청 파일이름 : ${file.originalname}`);
       cb(null, shopId + "_" + userId + "/" + file.originalname);
     },
   }),
