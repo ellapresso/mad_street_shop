@@ -10,7 +10,7 @@ async function whoamI(req, res) {
 
   if (user.owner) {
     const shop = await ownerDetail(userId);
-    shop.useMobile ? "" : (shop.mobile = "");
+    shop.useMobile ? "" : (shop.mobile = "비공개");
     delete shop.__v;
     return res.send({ user, shop });
   }
