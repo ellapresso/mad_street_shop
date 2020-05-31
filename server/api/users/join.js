@@ -17,6 +17,7 @@ async function join(req, res) {
   } else if ((await isUserYet(userId)) === 401) {
     return res.sendStatus(401);
   }
+  const resultData = {};
 
   if (isOwner === "owner") {
     logger.log(`사장님 회원가입 요청 : ${userId}`);
@@ -74,8 +75,8 @@ async function join(req, res) {
       ownerComment: shopComment || "",
     };
 
-    return await makeOwner(data)
-      .then((result) => res.send(result))
+    await makeOwner(data)
+      .then((result) => (resultData.shop = result))
       .catch((err) => res.send(err));
   }
 
@@ -90,12 +91,16 @@ async function join(req, res) {
         userTags: JSON.parse(req.body.category),
       },
       { upsert: true }
-    )
-      .then(res.sendStatus(200))
-      .catch((err) => {
-        res.status(500).send(err);
-      });
+    ).catch((err) => {
+      res.status(500).send(err);
+    });
   }
+
+  await Users.findOne({ userId, isUser: true }).then(
+    (result) => (resultData.user = result)
+  );
+
+  return res.send(resultData);
 }
 
 module.exports = join;
