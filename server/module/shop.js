@@ -1,5 +1,6 @@
 const Shops = require("../model/Shops");
 const Users = require("../model/Users");
+let cron = require("node-cron");
 const { logger } = require("./logger");
 
 const shopDetail = async (shopId) => {
@@ -10,14 +11,22 @@ const shopDetail = async (shopId) => {
   );
 };
 
-const shopUpdate = async (shopId, userId, infoObejct) => {
+const shopUpdate = async (shopId, userId, infoObject) => {
   logger.log(`가게 정보 업데이트 요청 : 유저 ${userId}의 가게 ${shopId}`);
   return await Shops.findOneAndUpdate(
     { _id: shopId, shopOwner: userId },
-    { now: infoObejct },
+    { now: infoObject },
     { upsert: true }
   );
 };
+
+const setCron = async (updateTime, infoObject) => {
+  logger.log(`가게 정보 업데이트 상세 정보 : { 
+    예약 시간 : ${updateTime},
+    업데이트 예정 정보 : ${infoObject}
+  }`);
+  return cron.schedule( updateTime,() => {shopUpdate(shopId, userId, { active: false })});
+}
 
 const findShopID = async (shopOwner) => {
   logger.log(`가게 아이디 요청 : 유저 ${shopOwner}`);
@@ -72,7 +81,9 @@ const makeOwner = async (data) => {
 
 module.exports.shopDetail = shopDetail;
 module.exports.shopUpdate = shopUpdate;
+module.exports.setCron = setCron;
 module.exports.findShopID = findShopID;
 module.exports.ownerDetail = ownerDetail;
 module.exports.findShopName = findShopName;
 module.exports.makeOwner = makeOwner;
+
