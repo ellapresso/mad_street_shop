@@ -38,7 +38,7 @@ async function operation(req, res) {
     closeTime:
       closeTime || moment(closeTimeSet).add(8, "hours").format("HH:MM"),
   };
-  logger.log("운영 시작 : ",updateInfo)
+  logger.log(`운영 시작 : ${updateInfo}`)
   shopUpdate(shopId, userId, updateInfo)
     .then(cron.schedule(
       `00 ${updateInfo.closeTime.split(":")[1]} ${updateInfo.closeTime.split(":")[0]} * * *`, 
