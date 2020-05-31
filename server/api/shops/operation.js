@@ -1,6 +1,7 @@
 const { shopUpdate, shopDetail } = require("../../module/shop");
 const { checkAll } = require("../../module/oAuth");
 const moment = require("moment");
+const { logger } = require("../../module/logger");
 let cron = require("node-cron");
 
 async function operation(req, res) {
@@ -10,15 +11,15 @@ async function operation(req, res) {
     userId,
     openTime,
     closeTime,
-    long,
-    lat,
+    longitude,
+    latitude,
     locationComment,
     subLocation,
   } = req.body;
-  console.log(long,lat)
   const user = await checkAll(userId, token);
   if (!user) return res.sendStatus(403);
   const shopInfo = await shopDetail(shopId);
+  
   if (shopInfo.shopOwner != userId) return res.sendStatus(403);
   let closeTimeSet;
   if (openTime)
@@ -28,8 +29,8 @@ async function operation(req, res) {
   const updateInfo = {
     active: true,
     location: {
-      longitude: long,
-      latitude: lat,
+      longitude,
+      latitude,
       subLocation,
     },
     locationComment: locationComment,
@@ -37,7 +38,7 @@ async function operation(req, res) {
     closeTime:
       closeTime || moment(closeTimeSet).add(8, "hours").format("HH:MM"),
   };
-  console.log(updateInfo)
+  logger.log(`운영 시작 : ${updateInfo}`)
   shopUpdate(shopId, userId, updateInfo)
     .then(cron.schedule(
       `00 ${updateInfo.closeTime.split(":")[1]} ${updateInfo.closeTime.split(":")[0]} * * *`, 
