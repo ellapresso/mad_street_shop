@@ -31,7 +31,6 @@ async function updateShop(req, res) {
 
     delete body.deleteFiles;
 
-    //TODO: promise 비동기 순서지정 필요.
     await fileList(shopId, shopOwner);
   }
 
