@@ -24,8 +24,8 @@ const ShopsSchema = new mongoose.Schema({
   now: {
     active: { type: Boolean, default: false },
     location: {
-      longitude: mongoose.Types.Decimal128,
-      latitude: mongoose.Types.Decimal128,
+      longitude: { type: mongoose.Types.Decimal128, default: null },
+      latitude: { type: mongoose.Types.Decimal128, default: null },
       subLocation: { type: String, default: "" },
     },
     locationComment: { type: String, default: null },
