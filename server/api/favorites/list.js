@@ -7,7 +7,7 @@ const _ = require("lodash");
 async function list(req, res) {
   const token = req.headers.authorization;
   const { lat, long } = req.query;
-  const { userId } = req.body;
+  const { userId } = req.params;
   const data = [];
 
   const user = await checkAll(userId, token);
