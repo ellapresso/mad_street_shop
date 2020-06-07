@@ -3,7 +3,8 @@ const { checkAll } = require("../../module/oAuth");
 
 async function insert(req, res) {
   const token = req.headers.authorization;
-  const { userId, shopId } = req.body;
+  const { userId } = req.params;
+  const { shopId } = req.body;
 
   const user = await checkAll(userId, token);
   if(!user) return res.sendStatus(403)

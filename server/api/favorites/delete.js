@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 
 async function deleted(req, res) {
   const token = req.headers.authorization;
-  const { userId, shopId } = req.body;
+  const { userId } = req.params;
+  const { shopId } = req.body;
   const isShop = await Shops.findOne({
     _id: mongoose.Types.ObjectId(`${shopId}`)
   });
