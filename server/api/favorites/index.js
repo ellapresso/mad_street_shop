@@ -2,8 +2,8 @@ const express = require("express");
 
 const router = express.Router();
 
-router.post("/", require("./insert"));
-router.delete("/", require("./delete"));
-router.get("/", require("./list"));
+router.post("/:userId/", require("./insert"));
+router.delete("/:userId/", require("./delete"));
+router.get("/:userId/", require("./list"));
 
 module.exports = router;
