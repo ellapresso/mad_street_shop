@@ -25,9 +25,7 @@ async function insert(req, res) {
     await Shops.findOneAndUpdate(
       { _id: shopId },
       { likeScore: isShop.likeScore + 1 }
-    ).then(
-      logger.console.log(`${userId}님이 ${isShop.shopName}을 좋아합니다.`)
-    );
+    ).then(logger.log(`${userId}님이 ${isShop.shopName}을 좋아합니다.`));
     return res.sendStatus(200);
   } else {
     return res.sendStatus(402);
