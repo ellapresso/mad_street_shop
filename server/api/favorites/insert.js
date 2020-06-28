@@ -7,7 +7,7 @@ async function insert(req, res) {
   const { shopId } = req.body;
 
   const user = await checkAll(userId, token);
-  if(!user) return res.sendStatus(403)
+  if (!user) return res.sendStatus(403);
   const isShop = await Shops.findOne({ _id: shopId, deleted: false });
   if (!isShop) return res.sendStatus(404);
 
@@ -19,6 +19,11 @@ async function insert(req, res) {
     arr.push(shopId);
     user.favoriteShops = arr;
     user.save();
+    //shop 의 likescore ++
+    await Shops.findOneAndUpdate(
+      { _id: shopId },
+      { likeScore: isShop.likeScore + 1 }
+    );
     return res.sendStatus(200);
   } else {
     return res.sendStatus(402);
