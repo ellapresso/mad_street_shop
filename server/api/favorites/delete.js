@@ -14,6 +14,7 @@ async function deleted(req, res) {
   const user = await checkAll(userId, token);
   if(!user) return res.sendStatus(403)
   user.favoriteShops = user.favoriteShops.filter(e => (e = !shopId));
+  logger.log(`before delete likeScore : ${isShop.likeScore}`)
   if (isShop.likeScore > 0){
     await Shops.findOneAndUpdate(
       {_id:shopId},
