@@ -1,6 +1,7 @@
 const Shops = require("../../model/Shops");
 const { checkAll } = require("../../module/oAuth");
 const mongoose = require("mongoose");
+const { logger } = require("../../module/logger");
 
 async function deleted(req, res) {
   const token = req.headers.authorization;
@@ -17,7 +18,8 @@ async function deleted(req, res) {
     await Shops.findOneAndUpdate(
       {_id:shopId},
       {likeScore:isShop.likeScore-1}
-    );
+      logger.console.log(`${userId}님이 ${isShop.shopName}을 좋하지않습니다..`)
+      ).then();
   }
   user.save();
   return res.sendStatus(200);
