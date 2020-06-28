@@ -10,11 +10,13 @@ async function deleted(req, res) {
     _id: mongoose.Types.ObjectId(`${shopId}`)
   });
   if (!isShop) return res.sendStatus(302);
-
   const user = await checkAll(userId, token);
   if(!user) return res.sendStatus(403)
   user.favoriteShops = user.favoriteShops.filter(e => (e = !shopId));
-
+  await Shops.findOneAndUpdate(
+    {_id:shopId},
+    {likeScore:isShop.likeScore-1}
+  );
   user.save();
   return res.sendStatus(200);
 }
