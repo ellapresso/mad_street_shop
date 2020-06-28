@@ -21,6 +21,7 @@ async function insert(req, res) {
     user.favoriteShops = arr;
     user.save();
     //shop 의 likescore ++
+    logger.log(`before add likeScore : ${isShop.likeScore}`);
     await Shops.findOneAndUpdate(
       { _id: shopId },
       { likeScore: isShop.likeScore + 1 }
