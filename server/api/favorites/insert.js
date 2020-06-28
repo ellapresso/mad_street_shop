@@ -1,5 +1,6 @@
 const Shops = require("../../model/Shops");
 const { checkAll } = require("../../module/oAuth");
+const { logger } = require("../../module/logger");
 
 async function insert(req, res) {
   const token = req.headers.authorization;
@@ -23,6 +24,8 @@ async function insert(req, res) {
     await Shops.findOneAndUpdate(
       { _id: shopId },
       { likeScore: isShop.likeScore + 1 }
+    ).then(
+      logger.console.log(`${userId}님이 ${isShop.shopName}을 좋아합니다.`)
     );
     return res.sendStatus(200);
   } else {
