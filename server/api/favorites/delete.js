@@ -15,6 +15,7 @@ async function deleted(req, res) {
   if (!user) return res.sendStatus(403);
   user.favoriteShops = user.favoriteShops.filter((e) => (e = !shopId));
   logger.log(`before delete likeScore : ${isShop.likeScore}`);
+  //TODO: User의 favoriteShop 리스트에 확인해서 있으면 지운다.
   if (isShop.likeScore > 0) {
     await Shops.findOneAndUpdate(
       { _id: shopId },
