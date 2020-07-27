@@ -3,7 +3,6 @@ const { checkAll } = require("../../module/oAuth");
 const moment = require("moment");
 const { logger } = require("../../module/logger");
 
-
 async function operation(req, res) {
   const token = req.headers.authorization;
   const { shopId } = req.params;
@@ -17,10 +16,9 @@ async function operation(req, res) {
     subLocation,
   } = req.body;
   const user = await checkAll(userId, token);
-  if (!user) return res.sendStatus(403);
   const shopInfo = await shopDetail(shopId);
-  
-  if (shopInfo.shopOwner !== userId) return res.sendStatus(403);
+  if (!user || shopInfo.shopOwner !== userId) return res.sendStatus(403);
+
   let closeTimeSet;
   if (openTime)
     closeTimeSet = moment()
@@ -38,15 +36,23 @@ async function operation(req, res) {
     closeTime:
       closeTime || moment(closeTimeSet).add(8, "hours").format("HH:MM"),
   };
-  logger.log(`운영 시작 : ${updateInfo}`)
+
+  logger.log(`운영 시작 : ${updateInfo}`);
+
   shopUpdate(shopId, userId, updateInfo)
-    .then(setCron(`00 ${updateInfo.closeTime.split(":")[1]} ${updateInfo.closeTime.split(":")[0]} * * *`, updateInfo))
+    .then(
+      setCron(
+        `00 ${updateInfo.closeTime.split(":")[1]} ${
+          updateInfo.closeTime.split(":")[0]
+        } * * *`,
+        updateInfo
+      )
+    )
     .catch((e) => {
-      logger.error(`운영 에러 ${e}`)
+      logger.error(`운영 에러 ${e}`);
       return res.sendStatus(500);
     });
   return res.send(updateInfo);
 }
 
 module.exports = operation;
-

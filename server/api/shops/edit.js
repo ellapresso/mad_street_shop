@@ -6,7 +6,14 @@ let cron = require("node-cron");
 async function operationEdit(req, res) {
   const token = req.headers.authorization;
   const { shopId } = req.params;
-  const { userId, longitude, latitude, subLocation, locationComment, closeTime } = req.body;
+  const {
+    userId,
+    longitude,
+    latitude,
+    subLocation,
+    locationComment,
+    closeTime,
+  } = req.body;
   const user = await checkAll(userId, token);
   if (!user) return res.sendStatus(403);
   const shopInfo = await shopDetail(shopId);
@@ -14,14 +21,21 @@ async function operationEdit(req, res) {
   shopData = shopInfo.now;
   const updateInfo = {
     active: shopData.active,
-    location: { longitude, latitude, subLocation},
+    location: { longitude, latitude, subLocation },
     locationComment,
     openTime: shopData.openTime,
     closeTime,
   };
   shopUpdate(shopId, userId, updateInfo)
-  .then(setCron(`00 ${updateInfo.closeTime.split(":")[1]} ${updateInfo.closeTime.split(":")[0]} * * *`, updateInfo))
-  .catch((e) => {
+    .then(
+      setCron(
+        `00 ${updateInfo.closeTime.split(":")[1]} ${
+          updateInfo.closeTime.split(":")[0]
+        } * * *`,
+        updateInfo
+      )
+    )
+    .catch((e) => {
       console.error(e);
       return res.sendStatus(500);
     });
@@ -29,4 +43,3 @@ async function operationEdit(req, res) {
 }
 
 module.exports = operationEdit;
-
