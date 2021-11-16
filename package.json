@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/ellapresso/mad_street_shop#readme",
   "dependencies": {
-    "aws-sdk": "^2.635.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
